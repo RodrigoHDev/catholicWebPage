@@ -1,0 +1,93 @@
+{
+  "id": "rosario",
+  "titulo": "Santo Rosario",
+  "misterios": "automatico",
+  "introduccion": [
+    {
+      "oracion": "senal-de-la-cruz"
+    },
+    {
+      "oracion": "abre-senor-mis-labios"
+    },
+    {
+      "oracion": "acto-de-contricion"
+    },
+    {
+      "oracion": "ven-espiritu-santo"
+    },
+    {
+      "oracion": "envia-tu-espiritu"
+    },
+    {
+      "oracion": "oracion-al-espiritu-santo"
+    }
+  ],
+  "peticiones": {
+    "pendiente": true,
+    "nota": "Aquí se ofrecen las intenciones antes de la primera decena. Se conectará con peticiones.json y con las que agregue mamá."
+  },
+  "decenas": 5,
+  "decena": [
+    {
+      "anuncio": "misterio"
+    },
+    {
+      "oracion": "padre-nuestro",
+      "cuenta": "grande"
+    },
+    {
+      "oracion": "ave-maria",
+      "repetir": 10,
+      "cuenta": "pequena"
+    },
+    {
+      "oracion": "gloria"
+    },
+    {
+      "oracion": "jaculatoria-madre-de-gracia"
+    },
+    {
+      "oracion": "oh-jesus-mio"
+    }
+  ],
+  "cierre": [
+    {
+      "titulo": "Por las intenciones del Santo Padre",
+      "pasos": [
+        {
+          "oracion": "padre-nuestro"
+        },
+        {
+          "oracion": "ave-maria"
+        },
+        {
+          "oracion": "gloria"
+        }
+      ]
+    },
+    {
+      "oracion": "ave-maria-hija-del-padre"
+    },
+    {
+      "oracion": "ave-maria-madre-del-hijo"
+    },
+    {
+      "oracion": "ave-maria-esposa-del-espiritu"
+    },
+    {
+      "oracion": "ave-maria-templo-trinidad"
+    },
+    {
+      "oracion": "salve"
+    },
+    {
+      "oracion": "letanias-lauretanas"
+    },
+    {
+      "oracion": "oracion-final-rosario"
+    },
+    {
+      "oracion": "senal-de-la-cruz"
+    }
+  ]
+}

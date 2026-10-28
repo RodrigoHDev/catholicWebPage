@@ -1,0 +1,87 @@
+---
+import type { GrupoMisterios } from '../lib/misterios';
+import { DIAS } from '../lib/hoy';
+
+interface Props {
+  grupos: GrupoMisterios[];
+}
+
+const { grupos } = Astro.props;
+
+// Lunes primero, como se dice: «lunes y sábado».
+const enOrden = (dias: number[]) => [...dias].sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
+const diasTexto = (dias: number[]) => {
+  const nombres = enOrden(dias).map((d) => DIAS[d]);
+  const texto = nombres.length > 1 ? `${nombres.slice(0, -1).join(', ')} y ${nombres.at(-1)}` : nombres[0];
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+};
+---
+
+<fieldset class="selector" data-selector>
+  <legend class="etiqueta">Elige los misterios</legend>
+  {
+    grupos.map((g, i) => (
+      <label class="opcion">
+        <input type="radio" name="grupo" value={g.id} checked={i === 0} />
+        <span class="nombre">{g.titulo}</span>
+        <span class="dias cuerpo">{diasTexto(g.dias)}</span>
+        <span class="etiqueta hoy" data-hoy={g.dias.join(',')} hidden>
+          Hoy
+        </span>
+      </label>
+    ))
+  }
+</fieldset>
+
+<style>
+  .selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--esp-3);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    text-align: center;
+  }
+  legend {
+    grid-column: 1 / -1;
+    margin-bottom: var(--esp-3);
+    padding: 0;
+    width: 100%;
+  }
+  .opcion {
+    position: relative;
+    display: grid;
+    gap: 2px;
+    padding: var(--esp-4) var(--esp-3);
+    border-radius: var(--radio-md);
+    background: var(--crema);
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: background-color 200ms ease, border-color 200ms ease;
+  }
+  .opcion:has(input:checked) {
+    background: var(--marmol);
+    border-color: var(--dorado);
+  }
+  .opcion:has(input:focus-visible) {
+    outline: 2px solid var(--foco);
+    outline-offset: 2px;
+  }
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .nombre {
+    font-family: var(--titulos);
+    font-size: 21px;
+    line-height: 25px;
+    font-weight: 600;
+  }
+  .dias {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--tinta-suave);
+  }
+</style>

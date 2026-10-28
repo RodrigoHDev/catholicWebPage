@@ -1,0 +1,335 @@
+---
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Base from '../../layouts/Base.astro';
+import Oracion from '../../components/Oracion.astro';
+import Pancho from '../../components/Pancho.astro';
+import Dupla from '../../components/Dupla.astro';
+import Icono from '../../components/Icono.astro';
+import AnilloDeCuentas from '../../components/AnilloDeCuentas.astro';
+import SelectorMisterios from '../../components/SelectorMisterios.astro';
+import { pasosDe, oracionesDe, usaCuentas, PRESENTACION } from '../../lib/devociones';
+import { GRUPOS, ORDINALES, FUENTE_LECTURA } from '../../lib/misterios';
+import { PANCHO, panchoImg } from '../../lib/pancho';
+import { POSES } from '../../lib/pancho-poses';
+import divinaMisericordia from '../../assets/divina-misericordia.jpg';
+import sagradoCorazon from '../../assets/sagrado-corazon.jpg';
+
+export async function getStaticPaths() {
+  const devociones = await getCollection('devociones');
+  return devociones.map((devocion) => ({ params: { devocion: devocion.id }, props: { devocion } }));
+}
+
+interface Props {
+  devocion: CollectionEntry<'devociones'>;
+}
+
+const { devocion } = Astro.props;
+const d = devocion.data;
+const pasos = pasosDe(d);
+const oraciones = await Promise.all(oracionesDe(pasos).map((id) => getEntry('oraciones', id)));
+const conCuentas = usaCuentas(d);
+const conMisterios = d.misterios === 'automatico';
+
+const datos = {
+  id: devocion.id,
+  decenas: d.decenas,
+  palabraDecena: conCuentas ? 'Decena' : 'Parte',
+  conCuentas,
+  pasos,
+  grupos: conMisterios ? GRUPOS.map(({ id, titulo, dias }) => ({ id, titulo, dias })) : [],
+  pancho: Object.fromEntries(POSES.map((p) => [p, { src: panchoImg(p).src, alt: PANCHO[p].alt }])),
+};
+
+const IMAGENES: Record<string, { src: ImageMetadata; alt: string }> = {
+  coronilla: { src: divinaMisericordia, alt: 'Jesús de la Divina Misericordia' },
+  'coronilla-sagrado-corazon': { src: sagradoCorazon, alt: 'Sagrado Corazón de Jesús' },
+};
+const imagen = IMAGENES[devocion.id];
+const descripcion = PRESENTACION[devocion.id]?.descripcion;
+---
+
+<Base titulo={d.titulo} descripcion={descripcion} inmersivo>
+  <div class="reproductor">
+    <div class="progreso" aria-hidden="true"><span data-progreso></span></div>
+
+    <div class="barra">
+      <a href="/" class="boton boton-secundario"><Icono nombre="salir" /> Salir</a>
+      <p class="etiqueta" data-fase>{d.titulo}</p>
+      <span></span>
+    </div>
+
+    <main class="escena contenedor-amplio">
+      <!-- Inicio -->
+      <section data-pantalla="inicio" class="pantalla">
+        {
+          conMisterios || imagen ? (
+            <Dupla src={imagen?.src} alt={imagen?.alt} lado="izq">
+              <Fragment slot="cabeza">
+                <h1 class="portada">{d.titulo}</h1>
+                <span class="filete" aria-hidden="true" />
+                <p class="subtitulo suave">{descripcion}</p>
+              </Fragment>
+              {conMisterios && (
+                <Fragment slot="figura">
+                  {GRUPOS.map((g, i) => (
+                    <div data-grupo-imagen={g.id} hidden={i > 0}>
+                      <Image src={g.imagen} alt={g.titulo} widths={[360, 560, 800]} sizes="(min-width: 900px) 480px, 85vw" />
+                    </div>
+                  ))}
+                </Fragment>
+              )}
+              {conMisterios && <SelectorMisterios grupos={GRUPOS} />}
+              <div class="acciones">
+                <button type="button" class="boton boton-principal" data-comenzar>Comenzar</button>
+                <button type="button" class="boton boton-secundario" data-continuar hidden>
+                  Continuar donde te quedaste
+                </button>
+              </div>
+              <Pancho pose="sentado" lado="izq" class="pancho-inicio" />
+            </Dupla>
+          ) : (
+            <div class="contenedor centrado">
+              <h1 class="portada">{d.titulo}</h1>
+              <span class="filete" aria-hidden="true" />
+              <p class="subtitulo suave">{descripcion}</p>
+              <div class="acciones">
+                <button type="button" class="boton boton-principal" data-comenzar>Comenzar</button>
+                <button type="button" class="boton boton-secundario" data-continuar hidden>
+                  Continuar donde te quedaste
+                </button>
+              </div>
+              <Pancho pose="sentado" lado="izq" class="pancho-inicio" />
+            </div>
+          )
+        }
+      </section>
+
+      <!-- Cada paso -->
+      <section data-pantalla="paso" class="pantalla" hidden>
+        <div data-contenido aria-live="polite"></div>
+        {conCuentas && <AnilloDeCuentas />}
+        <div class="contenedor" data-pancho-paso></div>
+      </section>
+
+      <!-- Fin -->
+      <section data-pantalla="fin" class="pantalla centrado" hidden>
+        <h2 class="portada">Amén.</h2>
+        <span class="filete" aria-hidden="true"></span>
+        <p class="subtitulo suave">Que Dios te bendiga, mamá.</p>
+        <div class="acciones">
+          <a href="/" class="boton boton-principal">Volver al inicio</a>
+          <button type="button" class="boton boton-secundario" data-otra-vez><Icono nombre="otraVez" /> Rezar otra vez</button>
+        </div>
+        <div data-pancho-fin></div>
+      </section>
+    </main>
+
+    <nav class="controles" aria-label="Avanzar en la devoción" hidden data-controles>
+      <button type="button" class="boton boton-secundario" data-anterior><Icono nombre="anterior" /> Anterior</button>
+      <button type="button" class="boton boton-principal" data-siguiente>Siguiente <Icono nombre="siguiente" /></button>
+    </nav>
+  </div>
+
+  {
+    oraciones.map((o) => (
+      <template data-oracion={o!.id}>
+        <div class="contenedor">
+          <Oracion oracion={o!} nombre="h2" />
+        </div>
+      </template>
+    ))
+  }
+
+  {
+    conMisterios &&
+      GRUPOS.flatMap((g) =>
+        g.misterios.map((m) => (
+          <template data-misterio={`${g.id}-${m.n}`}>
+            <Dupla src={m.imagen} alt={m.titulo} lado={m.n % 2 ? 'izq' : 'der'} class="anuncio">
+              <Fragment slot="cabeza">
+                <p class="etiqueta">{ORDINALES[m.n - 1]} misterio</p>
+                <h2 class="titulo">{m.titulo}</h2>
+                <span class="filete" aria-hidden="true" />
+                <p class="subtitulo suave">{m.cita}</p>
+              </Fragment>
+              <div class="lectura">
+                {m.lectura.map(([v, t]) => (
+                  <p>
+                    <sup>{v}</sup>{' '}
+                    {t.split('\n').map((linea, j) => (
+                      <Fragment>
+                        {j > 0 && <br />}
+                        {linea}
+                      </Fragment>
+                    ))}
+                  </p>
+                ))}
+                <p class="fuente">{FUENTE_LECTURA}</p>
+              </div>
+            </Dupla>
+          </template>
+        )),
+      )
+  }
+
+  <script type="application/json" id="datos-devocion" set:html={JSON.stringify(datos)} />
+  <script>
+    import { iniciarReproductor } from '../../scripts/reproductor';
+    iniciarReproductor(JSON.parse(document.getElementById('datos-devocion')!.textContent!));
+  </script>
+</Base>
+
+<style>
+  .reproductor {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  .progreso {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    height: 3px;
+  }
+  .progreso span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--acento);
+    transition: width 300ms ease;
+  }
+  .barra {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--esp-2);
+    padding: var(--esp-2) var(--esp-3);
+  }
+  .barra > :first-child {
+    justify-self: start;
+  }
+  .barra > :global(:last-child) {
+    justify-self: end;
+  }
+  .barra .boton {
+    min-height: 40px;
+    padding-inline: var(--esp-2);
+    font-size: 15px;
+  }
+  .barra .etiqueta {
+    margin: 0;
+    text-align: center;
+  }
+  .escena {
+    flex: 1;
+    padding-top: var(--esp-4);
+    padding-bottom: var(--esp-7);
+  }
+  .pantalla .portada {
+    margin-top: var(--esp-4);
+  }
+  .pantalla .subtitulo {
+    margin: 0;
+  }
+  .acciones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--esp-2);
+    margin-top: var(--esp-6);
+  }
+  :global(.pancho-inicio) {
+    margin-top: var(--esp-7);
+  }
+
+  /* Pasos que se insertan desde las plantillas */
+  .escena :global(.grupo) {
+    margin: 0 0 var(--esp-4);
+  }
+  .escena :global(.meta) {
+    margin: 0 0 var(--esp-3);
+  }
+  .escena :global(.anuncio) {
+    padding-top: var(--esp-4);
+  }
+  .escena :global(.anuncio .titulo) {
+    margin-top: var(--esp-2);
+  }
+  .escena :global(.anuncio .dupla-cabeza p) {
+    margin: 0;
+  }
+  .escena :global(.lectura) {
+    max-width: 60ch;
+    margin-inline: auto;
+    text-align: left;
+    font-size: 17px;
+    line-height: 29px;
+  }
+  .escena :global(.lectura p) {
+    margin: 0 0 var(--esp-2);
+  }
+  .escena :global(.lectura sup) {
+    color: var(--acento);
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 2px;
+  }
+  .escena :global(.lectura .fuente) {
+    margin-top: var(--esp-4);
+    font-size: 13px;
+    color: var(--tinta-suave);
+    font-style: italic;
+  }
+  [data-pancho-paso] :global(.pancho),
+  [data-pancho-fin] :global(.pancho) {
+    margin-top: var(--esp-7);
+  }
+  [data-pancho-fin] :global(.pancho) {
+    justify-content: center;
+    margin-inline: auto;
+  }
+
+  .controles {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--esp-4);
+    padding: var(--esp-3) var(--esp-4) calc(var(--esp-3) + env(safe-area-inset-bottom));
+    background: var(--fondo);
+    border-top: 1px solid var(--veta);
+  }
+  .controles .boton-principal {
+    flex: 1;
+    max-width: 280px;
+  }
+  @media (min-width: 720px) {
+    .controles {
+      justify-content: center;
+    }
+  }
+  @media (min-width: 900px) {
+    .pantalla :global(.dupla-cabeza),
+    .pantalla :global(.dupla-resto) {
+      text-align: left;
+    }
+    .pantalla :global(.dupla-cabeza .filete) {
+      margin-inline: 0;
+    }
+    .pantalla .acciones {
+      align-items: flex-start;
+    }
+    .escena :global(.anuncio .dupla-cabeza) {
+      text-align: left;
+    }
+    .escena :global(.anuncio .filete) {
+      margin-inline: 0;
+    }
+    .escena :global(.lectura) {
+      margin-inline: 0;
+    }
+  }
+</style>

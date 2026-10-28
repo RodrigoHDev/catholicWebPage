@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Pancho from '../components/Pancho.astro';
+---
+
+<Base titulo="No encontrada">
+  <main class="contenedor centrado">
+    <h1 class="titulo hueco">Esta página no existe</h1>
+    <span class="filete" aria-hidden="true"></span>
+    <p class="cuerpo suave">Pancho buscó por todos lados y no la encontró.</p>
+    <a class="boton boton-principal" href="/">Volver al inicio</a>
+    <Pancho pose="de-espaldas" frase={false} tamano={120} class="final" />
+  </main>
+</Base>
+
+<style>
+  .hueco {
+    margin-top: var(--esp-8);
+  }
+  .final {
+    justify-content: center;
+    margin: var(--esp-7) auto 0 !important;
+  }
+</style>

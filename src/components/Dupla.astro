@@ -1,0 +1,95 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+// Imagen y texto lado a lado.
+// Celular: cabeza → imagen centrada → resto. Web: la imagen ocupa una columna
+// (alternar `lado` entre secciones) y el texto aprovecha la otra.
+// El slot `figura` reemplaza la imagen (p. ej. varias imágenes que se alternan).
+interface Props {
+  src?: ImageMetadata;
+  alt?: string;
+  lado?: 'izq' | 'der';
+  // PNG con transparencia: sin tarjeta ni radio.
+  recorte?: boolean;
+  prioridad?: boolean;
+  class?: string;
+}
+
+const { src, alt, lado = 'izq', recorte = false, prioridad = false, class: clase } = Astro.props;
+const conCabeza = Astro.slots.has('cabeza');
+---
+
+<section class:list={['dupla', `dupla-${lado}`, { recorte, 'sin-cabeza': !conCabeza }, clase]}>
+  {
+    conCabeza && (
+      <div class="dupla-cabeza">
+        <slot name="cabeza" />
+      </div>
+    )
+  }
+  <figure class="dupla-imagen">
+    {Astro.slots.has('figura') ? <slot name="figura" /> : src && <Image
+      src={src}
+      alt={alt ?? ''}
+      widths={[360, 560, 800, 1100]}
+      sizes="(min-width: 900px) 480px, 85vw"
+      loading={prioridad ? 'eager' : 'lazy'}
+      fetchpriority={prioridad ? 'high' : 'auto'}
+    />}
+  </figure>
+  <div class="dupla-resto">
+    <slot />
+  </div>
+</section>
+
+<style is:global>
+  .dupla {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'cabeza' 'imagen' 'resto';
+    gap: var(--esp-6);
+    text-align: center;
+  }
+  .dupla-cabeza { grid-area: cabeza; }
+  .dupla-imagen { grid-area: imagen; margin: 0; justify-self: center; width: min(85%, 420px); }
+  .dupla-resto { grid-area: resto; }
+  .dupla-resto:empty { display: none; }
+
+  .dupla-imagen img {
+    width: 100%;
+    border-radius: var(--radio-lg);
+    box-shadow: var(--sombra-tarjeta);
+    outline: 1px solid color-mix(in srgb, var(--veta) 60%, transparent);
+    outline-offset: 6px;
+  }
+  .dupla.recorte .dupla-imagen img {
+    border-radius: 0;
+    box-shadow: none;
+    outline: 0;
+    filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.2));
+  }
+
+  @media (min-width: 900px) {
+    .dupla {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      grid-template-rows: auto 1fr;
+      grid-template-areas: 'imagen cabeza' 'imagen resto';
+      column-gap: var(--esp-8);
+      row-gap: var(--esp-5);
+      align-items: start;
+    }
+    .dupla-der {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+      grid-template-areas: 'cabeza imagen' 'resto imagen';
+    }
+    .dupla.sin-cabeza { grid-template-areas: 'imagen resto' 'imagen resto'; }
+    .dupla-der.sin-cabeza { grid-template-areas: 'resto imagen' 'resto imagen'; }
+    .dupla-cabeza { align-self: end; }
+    .dupla-imagen {
+      width: 100%;
+      position: sticky;
+      top: var(--esp-6);
+    }
+  }
+</style>

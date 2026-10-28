@@ -1,0 +1,51 @@
+---
+import Icono from './Icono.astro';
+// Interruptor Día / Noche: una píldora con el sol y la luna. El script de Base.astro lo controla.
+---
+
+<button type="button" class="tema-pildora" data-tema aria-label="Cambiar a tema de noche">
+  <span class="perilla" aria-hidden="true"></span>
+  <span class="lado"><Icono nombre="sol" /></span>
+  <span class="lado"><Icono nombre="luna" /></span>
+</button>
+
+<style is:global>
+  .tema-pildora {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    width: 76px;
+    height: 38px;
+    padding: 3px;
+    border: 1px solid var(--veta);
+    border-radius: var(--radio-pill);
+    background: var(--crema);
+    color: var(--tinta-suave);
+    cursor: pointer;
+    flex: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tema-pildora .lado {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+    transition: color 250ms ease;
+  }
+  .tema-pildora .perilla {
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--nogal);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+    transition: transform 250ms ease;
+  }
+  .tema-pildora[data-modo='dark'] .perilla { transform: translateX(33px); }
+  .tema-pildora[data-modo='light'] .lado:nth-child(2),
+  .tema-pildora[data-modo='dark'] .lado:nth-child(3) { color: var(--en-nogal); }
+</style>

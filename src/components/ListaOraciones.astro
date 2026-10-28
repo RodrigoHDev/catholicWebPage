@@ -1,0 +1,63 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { parrafos } from '../lib/texto';
+
+interface Props {
+  oraciones: CollectionEntry<'oraciones'>[];
+}
+
+const { oraciones } = Astro.props;
+const primeraLinea = (o: CollectionEntry<'oraciones'>) =>
+  o.data.tipo === 'letania' ? 'Letanía' : (parrafos(o.body)[0]?.[0] ?? '');
+---
+
+{
+  oraciones.length ? (
+    <ol class="lista">
+      {oraciones.map((o) => (
+        <li>
+          <a class="tarjeta enlace-tarjeta" href={`/oraciones/${o.data.seccion}/${o.id}`}>
+            <span class="oracion-nombre">{o.data.nombre}</span>
+            <span class="cuerpo suave linea">{primeraLinea(o)}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  ) : (
+    <p class="cuerpo suave centrado">Todavía no hay oraciones aquí.</p>
+  )
+}
+
+<style>
+  .lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--esp-3);
+  }
+  .enlace-tarjeta {
+    display: grid;
+    gap: 2px;
+    padding: var(--esp-3) var(--esp-4);
+    text-align: center;
+    color: var(--tinta);
+    text-decoration: none;
+    border-top: 3px solid var(--acento);
+    transition: transform 200ms ease;
+  }
+  .enlace-tarjeta:hover {
+    transform: translateY(-2px);
+  }
+  .enlace-tarjeta .oracion-nombre {
+    font-size: 21px;
+    line-height: 26px;
+  }
+  .linea {
+    font-size: 15px;
+    line-height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>

@@ -1,0 +1,117 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import Base from '../../../layouts/Base.astro';
+import Pancho from '../../../components/Pancho.astro';
+import Dupla from '../../../components/Dupla.astro';
+import Lista from '../../../components/ListaOraciones.astro';
+import { Image } from 'astro:assets';
+import divinaMisericordia from '../../../assets/divina-misericordia.jpg';
+import virgenGuadalupe from '../../../assets/virgen-guadalupe.webp';
+import santisimaTrinidad from '../../../assets/santisima-trinidad.webp';
+import sagradoCorazon from '../../../assets/sagrado-corazon.jpg';
+import logoTov from '../../../assets/tov.png';
+
+export async function getStaticPaths() {
+  const secciones = await getCollection('secciones');
+  return secciones.map((seccion) => ({ params: { seccion: seccion.id }, props: { seccion } }));
+}
+
+interface Props {
+  seccion: CollectionEntry<'secciones'>;
+}
+
+const { seccion } = Astro.props;
+const oraciones = (await getCollection('oraciones', (o) => o.data.seccion === seccion.id)).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
+
+// Imagen al lado del título y la lista; el lado alterna entre secciones.
+const IMAGENES: Record<string, { src: ImageMetadata; alt: string; lado: 'izq' | 'der' }> = {
+  marianas: { src: virgenGuadalupe, alt: 'Nuestra Señora de Guadalupe', lado: 'izq' },
+  'espiritu-santo': { src: santisimaTrinidad, alt: 'La Santísima Trinidad', lado: 'der' },
+  misericordia: { src: divinaMisericordia, alt: 'Jesús de la Divina Misericordia', lado: 'izq' },
+  'sagrado-corazon': { src: sagradoCorazon, alt: 'Sagrado Corazón de Jesús', lado: 'der' },
+};
+const imagen = IMAGENES[seccion.id];
+
+// Logotipo arriba del título (en lugar de una imagen al lado).
+const LOGOS: Record<string, { src: ImageMetadata; alt: string }> = {
+  tov: { src: logoTov, alt: 'Talleres de Oración y Vida. Una Nueva Evangelización' },
+};
+const logo = LOGOS[seccion.id];
+
+---
+
+<Base titulo={seccion.data.titulo} descripcion={seccion.data.descripcion}>
+  <main class:list={[imagen ? 'contenedor-amplio' : 'contenedor']}>
+    <nav class="migas"><a href="/oraciones">Oraciones</a></nav>
+
+    {
+      imagen ? (
+        <Dupla src={imagen.src} alt={imagen.alt} lado={imagen.lado} class="con-imagen">
+          <header slot="cabeza" class="centrado encabezado">
+            <h1 class="titulo">{seccion.data.titulo}</h1>
+            <span class="filete" aria-hidden="true" />
+            <p class="subtitulo suave">{seccion.data.descripcion}</p>
+          </header>
+          <Lista oraciones={oraciones} />
+        </Dupla>
+      ) : (
+        <Fragment>
+          <header class="centrado encabezado">
+            {logo && (
+              <div class="logo">
+                <Image src={logo.src} alt={logo.alt} widths={[240, 480]} sizes="240px" />
+              </div>
+            )}
+            <h1 class="titulo">{seccion.data.titulo}</h1>
+            <span class="filete" aria-hidden="true" />
+            <p class="subtitulo suave">{seccion.data.descripcion}</p>
+          </header>
+          <Lista oraciones={oraciones} />
+        </Fragment>
+      )
+    }
+
+    <Pancho
+      pose={oraciones.length ? seccion.data.pancho : 'colgado'}
+      frase={oraciones.length ? seccion.data.frase : undefined}
+      lado="izq"
+      class="final"
+    />
+  </main>
+</Base>
+
+<style>
+  .migas {
+    font-size: 15px;
+    margin-top: var(--esp-5);
+  }
+  .encabezado {
+    padding-block: var(--esp-5) var(--esp-6);
+  }
+  .encabezado .subtitulo {
+    margin: 0;
+  }
+  :global(.con-imagen) .encabezado {
+    padding-bottom: 0;
+  }
+  /* Placa clara: el logotipo trae letras negras y debe leerse también en el tema Noche. */
+  .logo {
+    display: inline-block;
+    margin-bottom: var(--esp-5);
+    padding: var(--esp-4) var(--esp-5);
+    background: #fffdf8;
+    border: 1px solid var(--veta);
+    border-radius: var(--radio-lg);
+    box-shadow: var(--sombra-tarjeta);
+  }
+  .logo :global(img) {
+    width: 240px;
+    max-width: 100%;
+  }
+  .final {
+    margin-top: var(--esp-7);
+  }
+</style>

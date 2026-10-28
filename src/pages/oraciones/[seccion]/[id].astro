@@ -1,0 +1,95 @@
+---
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Oracion from '../../../components/Oracion.astro';
+import Pancho from '../../../components/Pancho.astro';
+import { panchoPara } from '../../../lib/pancho';
+
+export async function getStaticPaths() {
+  const oraciones = await getCollection('oraciones');
+  return oraciones.map((oracion) => ({
+    params: { seccion: oracion.data.seccion, id: oracion.id },
+    props: { oracion },
+  }));
+}
+
+interface Props {
+  oracion: CollectionEntry<'oraciones'>;
+}
+
+const { oracion } = Astro.props;
+const seccion = (await getEntry('secciones', oracion.data.seccion))!;
+const hermanas = (await getCollection('oraciones', (o) => o.data.seccion === oracion.data.seccion)).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
+const i = hermanas.findIndex((o) => o.id === oracion.id);
+const anterior = hermanas[i - 1];
+const siguiente = hermanas[i + 1];
+const url = (o: CollectionEntry<'oraciones'>) => `/oraciones/${o.data.seccion}/${o.id}`;
+---
+
+<Base titulo={oracion.data.nombre}>
+  <main class="contenedor">
+    <nav class="migas"><a href={`/oraciones/${seccion.id}`}>{seccion.data.titulo}</a></nav>
+
+    <div class="hoja">
+      <Oracion oracion={oracion} nombre="h1" />
+    </div>
+
+    <nav class="vecinas" aria-label="Otras oraciones de esta sección">
+      {
+        anterior ? (
+          <a href={url(anterior)} class="vecina">
+            <span class="etiqueta">Anterior</span>
+            <span>{anterior.data.nombre}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        siguiente && (
+          <a href={url(siguiente)} class="vecina derecha">
+            <span class="etiqueta">Siguiente</span>
+            <span>{siguiente.data.nombre}</span>
+          </a>
+        )
+      }
+    </nav>
+
+    <Pancho pose={panchoPara(oracion.id)} lado={i % 2 ? 'izq' : 'der'} class="final" />
+  </main>
+</Base>
+
+<style>
+  .migas {
+    font-size: 15px;
+    margin-top: var(--esp-5);
+  }
+  .hoja {
+    padding-block: var(--esp-6) var(--esp-5);
+  }
+  .vecinas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--esp-4);
+    padding-top: var(--esp-5);
+    border-top: 1px solid var(--veta);
+  }
+  .vecina {
+    display: grid;
+    gap: var(--esp-1);
+    font-family: var(--titulos);
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .derecha {
+    text-align: right;
+    grid-column: 2;
+  }
+  .final {
+    margin-top: var(--esp-7);
+  }
+</style>

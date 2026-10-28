@@ -1,0 +1,51 @@
+[
+  {
+    "id": "fundamentales",
+    "titulo": "Oraciones fundamentales",
+    "corto": "Fundamentales",
+    "descripcion": "Las oraciones de siempre.",
+    "orden": 1,
+    "pancho": "sentado"
+  },
+  {
+    "id": "marianas",
+    "titulo": "Oraciones a la Virgen",
+    "corto": "A la Virgen",
+    "descripcion": "Para rezar con María.",
+    "orden": 2,
+    "pancho": "estambre",
+    "frase": "Pancho también quiere mucho a la Virgen."
+  },
+  {
+    "id": "espiritu-santo",
+    "titulo": "Al Espíritu Santo",
+    "corto": "Espíritu Santo",
+    "descripcion": "Para comenzar a orar.",
+    "orden": 3,
+    "pancho": "estirandose"
+  },
+  {
+    "id": "misericordia",
+    "titulo": "Divina Misericordia",
+    "corto": "Divina Misericordia",
+    "descripcion": "Oraciones de la coronilla.",
+    "orden": 4,
+    "pancho": "mirando-arriba"
+  },
+  {
+    "id": "sagrado-corazon",
+    "titulo": "Sagrado Corazón de Jesús",
+    "corto": "Sagrado Corazón",
+    "descripcion": "Coronilla que rezaba el Padre Pío.",
+    "orden": 5,
+    "pancho": "en-el-borde"
+  },
+  {
+    "id": "tov",
+    "titulo": "Talleres de Oración y Vida",
+    "corto": "TOV",
+    "descripcion": "Oraciones de los TOV del P. Ignacio Larrañaga.",
+    "orden": 6,
+    "pancho": "pan"
+  }
+]

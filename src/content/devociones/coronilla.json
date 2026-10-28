@@ -1,0 +1,51 @@
+{
+  "id": "coronilla",
+  "titulo": "Coronilla de la Divina Misericordia",
+  "misterios": null,
+  "introduccion": [
+    {
+      "oracion": "senal-de-la-cruz"
+    },
+    {
+      "oracion": "padre-nuestro"
+    },
+    {
+      "oracion": "ave-maria"
+    },
+    {
+      "oracion": "credo"
+    }
+  ],
+  "peticiones": {
+    "pendiente": true,
+    "nota": "Intenciones antes de la primera decena."
+  },
+  "decenas": 5,
+  "decena": [
+    {
+      "oracion": "padre-eterno",
+      "cuenta": "grande"
+    },
+    {
+      "oracion": "por-su-dolorosa-pasion",
+      "repetir": 10,
+      "cuenta": "pequena"
+    }
+  ],
+  "cierre": [
+    {
+      "oracion": "santo-dios",
+      "repetir": 3
+    },
+    {
+      "oracion": "oh-dios-eterno",
+      "opcional": true
+    },
+    {
+      "oracion": "jesus-en-ti-confio"
+    },
+    {
+      "oracion": "senal-de-la-cruz"
+    }
+  ]
+}

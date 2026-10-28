@@ -1,0 +1,258 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Dupla from '../components/Dupla.astro';
+import Pancho from '../components/Pancho.astro';
+import Icono from '../components/Icono.astro';
+import { esIcono } from '../lib/iconos';
+import inicio from '../assets/inicio.png';
+import { carta } from '../lib/carta';
+import { GRUPOS } from '../lib/misterios';
+import { PRESENTACION } from '../lib/devociones';
+
+const devociones = (await getCollection('devociones')).sort(
+  (a, b) => (PRESENTACION[a.id]?.orden ?? 99) - (PRESENTACION[b.id]?.orden ?? 99),
+);
+const grupos = GRUPOS.map(({ id, titulo, dias }) => ({ id, titulo, dias }));
+---
+
+<Base>
+  <main>
+    <div class="contenedor-amplio heroe">
+      <Dupla src={inicio} alt="Cruz de madera con Cristo y la Virgen María en plata" lado="izq" recorte prioridad>
+        <Fragment slot="cabeza">
+          <p class="etiqueta">Para mamá</p>
+          <h1 class="portada">Un lugar para orar</h1>
+          <span class="filete" aria-hidden="true"></span>
+          <p class="subtitulo suave">Para rezar con calma, de día y de noche.</p>
+        </Fragment>
+
+        <div class="hoy">
+          <Pancho pose="en-el-borde" frase={false} tamano={80} class="sobre-borde" />
+          <div class="marmol">
+            <p class="etiqueta"><Icono nombre="hoy" /> <span data-hoy-dia>Hoy</span></p>
+            <h2 class="titulo" data-hoy-titulo>Santo Rosario</h2>
+            <p class="subtitulo suave" data-hoy-misterios>Con los misterios del día.</p>
+            <a class="boton boton-principal" href="/rezar/rosario">Rezar el Rosario</a>
+          </div>
+        </div>
+      </Dupla>
+    </div>
+
+    <section class="contenedor carta" aria-labelledby="titulo-carta">
+      <article class="tarjeta">
+        <span class="ornamento" aria-hidden="true"><Icono nombre="cruz" /></span>
+        <h2 id="titulo-carta" class="titulo centrado">
+          {carta?.titulo ?? 'Querida mamá'}
+        </h2>
+        <span class="filete" aria-hidden="true"></span>
+        {
+          carta ? (
+            <Fragment>
+              {carta.parrafos.map((p) => (
+                <p class="cuerpo">
+                  {p.map((linea, j) => (
+                    <Fragment>
+                      {j > 0 && <br />}
+                      {linea}
+                    </Fragment>
+                  ))}
+                </p>
+              ))}
+              {carta.firma && <p class="firma subtitulo">{carta.firma}</p>}
+            </Fragment>
+          ) : (
+            <p class="cuerpo suave centrado">Aquí irá una carta para ti.</p>
+          )
+        }
+      </article>
+      <Pancho
+        pose={carta ? 'lamiendose' : 'colgado'}
+        lado="izq"
+        frase={carta ? 'Pancho también te quiere.' : undefined}
+        class="pancho-carta"
+      />
+    </section>
+
+    <section class="contenedor-amplio bloque" aria-labelledby="titulo-devociones">
+      <h2 id="titulo-devociones" class="titulo centrado">Devociones</h2>
+      <span class="filete" aria-hidden="true"></span>
+      <ul class="rejilla">
+        {
+          devociones.map((d) => (
+            <li>
+              <a class="tarjeta enlace-tarjeta" href={`/rezar/${d.id}`}>
+                {esIcono(d.id) && (
+                  <span class="icono-tarjeta">
+                    <Icono nombre={d.id} />
+                  </span>
+                )}
+                <span class="oracion-nombre">{d.data.titulo}</span>
+                <span class="cuerpo suave">{PRESENTACION[d.id]?.descripcion}</span>
+                <span class="etiqueta">Rezar</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <Pancho pose="sentado" frase="Pancho ya está listo para rezar contigo." class="pancho-devociones" />
+    </section>
+  </main>
+
+  <script type="application/json" id="grupos" set:html={JSON.stringify(grupos)} />
+  <script>
+    import { grupoDeHoy, nombreDelDia } from '../lib/hoy';
+
+    const grupos = JSON.parse(document.getElementById('grupos')!.textContent!);
+    const grupo = grupoDeHoy(grupos);
+    document.querySelector('[data-hoy-dia]')!.textContent = `Hoy · ${nombreDelDia()}`;
+    if (grupo) {
+      document.querySelector('[data-hoy-misterios]')!.textContent = `Hoy te toca los ${grupo.titulo}.`;
+    }
+  </script>
+</Base>
+
+<style>
+  .heroe {
+    padding-top: var(--esp-6);
+  }
+  .heroe :global(.dupla-cabeza .etiqueta) {
+    margin: 0 0 var(--esp-2);
+  }
+  .heroe :global(.dupla-cabeza .subtitulo) {
+    margin: 0;
+  }
+  .heroe :global(.dupla-imagen) {
+    width: min(78%, 380px);
+  }
+  .hoy {
+    max-width: 480px;
+    margin-inline: auto;
+  }
+  .hoy .marmol {
+    text-align: center;
+    padding: var(--esp-6) var(--esp-5);
+    border: 1px solid var(--veta);
+  }
+  .hoy .titulo {
+    margin: var(--esp-2) 0;
+  }
+  .hoy .subtitulo {
+    margin: 0 0 var(--esp-5);
+  }
+  .hoy .etiqueta {
+    margin: 0;
+  }
+  /* Pancho sentado sobre el borde de la tarjeta de mármol. */
+  .hoy :global(.sobre-borde) {
+    margin-bottom: -14px;
+    margin-right: var(--esp-5);
+    position: relative;
+    z-index: 1;
+  }
+  @media (min-width: 900px) {
+    .heroe :global(.dupla) {
+      align-items: center;
+    }
+    .heroe :global(.dupla-imagen) {
+      width: 100%;
+      max-width: 440px;
+      justify-self: end;
+    }
+    .heroe :global(.dupla-cabeza),
+    .heroe :global(.dupla-resto) {
+      text-align: left;
+    }
+    .heroe :global(.dupla-cabeza .filete) {
+      margin-inline: 0;
+    }
+    .heroe .portada {
+      font-size: 64px;
+      line-height: 66px;
+    }
+    .hoy {
+      margin-inline: 0;
+    }
+  }
+
+  .carta {
+    margin-top: var(--esp-8);
+  }
+  .carta .tarjeta {
+    position: relative;
+    padding: var(--esp-7) var(--esp-5) var(--esp-6);
+  }
+  .ornamento {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--acento);
+    color: var(--fondo);
+    font-size: 16px;
+    line-height: 1;
+  }
+  .carta .cuerpo {
+    margin: 0 0 var(--esp-4);
+  }
+  .firma {
+    text-align: right;
+    margin: var(--esp-5) 0 0;
+  }
+  .carta :global(.pancho-carta) {
+    margin-top: var(--esp-4);
+  }
+
+  .bloque {
+    margin-top: var(--esp-8);
+  }
+  .rejilla {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--esp-4);
+  }
+  @media (min-width: 900px) {
+    .rejilla {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .enlace-tarjeta {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    align-content: start;
+    gap: var(--esp-2);
+    height: 100%;
+    color: var(--tinta);
+    text-decoration: none;
+    border-top: 3px solid var(--acento);
+    transition: transform 200ms ease;
+  }
+  .icono-tarjeta {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: var(--esp-1);
+    border-radius: 50%;
+    background: var(--acento);
+    color: var(--fondo);
+    font-size: 20px;
+  }
+  .enlace-tarjeta:hover {
+    transform: translateY(-2px);
+  }
+  .enlace-tarjeta .etiqueta {
+    margin-top: auto;
+  }
+  .bloque :global(.pancho-devociones) {
+    margin-top: var(--esp-6);
+  }
+</style>

@@ -1,0 +1,959 @@
+{
+  "_dias": "0 = domingo … 6 = sábado",
+  "gozosos": {
+    "titulo": "Misterios Gozosos",
+    "dias": [
+      1,
+      6
+    ],
+    "imagen": "gozosos.jpg",
+    "misterios": [
+      {
+        "n": 1,
+        "titulo": "La Anunciación del Ángel a la Virgen María y la Encarnación del Hijo de Dios",
+        "cita": "Lc 1, 26-38",
+        "imagen": "gozosos-1.jpg",
+        "lectura": [
+          [
+            26,
+            "En el sexto mes, el ángel Gabriel fue enviado por Dios a una ciudad de Galilea, llamada Nazaret,"
+          ],
+          [
+            27,
+            "a una virgen que estaba comprometida con un hombre perteneciente a la familia de David, llamado José. El nombre de la virgen era María."
+          ],
+          [
+            28,
+            "El Angel entró en su casa y la saludó, diciendo: «¡Alégrate!, llena de gracia, el Señor está contigo»."
+          ],
+          [
+            29,
+            "Al oír estas palabras, ella quedó desconcertada y se preguntaba qué podía significar ese saludo."
+          ],
+          [
+            30,
+            "Pero el Angel le dijo: «No temas, María, porque Dios te ha favorecido."
+          ],
+          [
+            31,
+            "Concebirás y darás a luz un hijo, y le pondrás por nombre Jesús;"
+          ],
+          [
+            32,
+            "él será grande y será llamado Hijo del Altísimo. El Señor Dios le dará el trono de David, su padre,"
+          ],
+          [
+            33,
+            "reinará sobre la casa de Jacob para siempre y su reino no tendrá fin»."
+          ],
+          [
+            34,
+            "María dijo al Angel: «¿Cómo puede ser eso, si yo no tengo relaciones con ningún hombre?»."
+          ],
+          [
+            35,
+            "El Angel le respondió: «El Espíritu Santo descenderá sobre ti y el poder del Altísimo te cubrirá con su sombra. Por eso el niño será Santo y será llamado Hijo de Dios."
+          ],
+          [
+            36,
+            "También tu parienta Isabel concibió un hijo a pesar de su vejez, y la que era considerada estéril, ya se encuentra en su sexto mes,"
+          ],
+          [
+            37,
+            "porque no hay nada imposible para Dios»."
+          ],
+          [
+            38,
+            "María dijo entonces: «Yo soy la servidora del Señor, que se cumpla en mí lo que has dicho».Y el Angel se alejó."
+          ]
+        ]
+      },
+      {
+        "n": 2,
+        "titulo": "La visita de María Santísima a su prima Isabel",
+        "cita": "Lc 1, 39-56",
+        "imagen": "gozosos-2.jpg",
+        "lectura": [
+          [
+            39,
+            "En aquellos días, María partió y fue sin demora a un pueblo de la montaña de Judá."
+          ],
+          [
+            40,
+            "Entró en la casa de Zacarías y saludó a Isabel."
+          ],
+          [
+            41,
+            "Apenas esta oyó el saludo de María, el niño saltó de alegría en su seno, e Isabel, llena del Espíritu Santo,"
+          ],
+          [
+            42,
+            "exclamó: «¡Tú eres bendita entre todas las mujeres y bendito es el fruto de tu vientre!"
+          ],
+          [
+            43,
+            "¿Quién soy yo, para que la madre de mi Señor venga a visitarme?"
+          ],
+          [
+            44,
+            "Apenas oí tu saludo, el niño saltó de alegría en mi seno."
+          ],
+          [
+            45,
+            "Feliz de ti por haber creído que se cumplirá lo que te fue anunciado de parte del Señor»."
+          ],
+          [
+            46,
+            "María dijo entonces: «Mi alma canta la grandeza del Señor,"
+          ],
+          [
+            47,
+            "y mi espíritu se estremece de gozo en Dios, mi salvador,"
+          ],
+          [
+            48,
+            "porque el miró con bondad la pequeñez de tu servidora. En adelante todas las generaciones me llamarán feliz,"
+          ],
+          [
+            49,
+            "porque el Todopoderoso he hecho en mí grandes cosas: ¡su Nombre es santo!"
+          ],
+          [
+            50,
+            "Su misericordia se extiende de generación en generación sobre aquellos que lo temen."
+          ],
+          [
+            51,
+            "Desplegó la fuerza de su brazo, dispersó a los soberbios de corazón."
+          ],
+          [
+            52,
+            "Derribó a los poderosos de su trono y elevó a los humildes."
+          ],
+          [
+            53,
+            "Colmó de bienes a los hambrientos y despidió a los ricos con las manos vacías."
+          ],
+          [
+            54,
+            "Socorrió a Israel, su servidor, acordándose de su misericordia,"
+          ],
+          [
+            55,
+            "como lo había prometido a nuestros padres, en favor de Abraham y de su descendencia para siempre»."
+          ],
+          [
+            56,
+            "María permaneció con Isabel unos tres meses y luego regresó a su casa."
+          ]
+        ]
+      },
+      {
+        "n": 3,
+        "titulo": "El nacimiento de Nuestro Señor Jesucristo en el portal de Belén",
+        "cita": "Lc 2, 1-20",
+        "imagen": "gozosos-3.jpg",
+        "lectura": [
+          [
+            1,
+            "En aquella época apareció un decreto del emperador Augusto, ordenando que se realizara un censo en todo el mundo."
+          ],
+          [
+            2,
+            "Este primer censo tuvo lugar cuando Quirino gobernaba la Siria."
+          ],
+          [
+            3,
+            "Y cada uno iba a inscribirse a su ciudad de origen."
+          ],
+          [
+            4,
+            "José, que pertenecía a la familia de David, salió de Nazaret, ciudad de Galilea, y se dirigió a Belén de Judea, la ciudad de David,"
+          ],
+          [
+            5,
+            "para inscribirse con María, su esposa, que estaba embarazada."
+          ],
+          [
+            6,
+            "Mientras se encontraban en Belén, le llegó el tiempo de ser madre;"
+          ],
+          [
+            7,
+            "y María dio a luz a su Hijo primogénito, lo envolvió en pañales y lo acostó en un pesebre, porque no había lugar para ellos en el albergue."
+          ],
+          [
+            8,
+            "En esa región acampaban unos pastores, que vigilaban por turno sus rebaños durante la noche."
+          ],
+          [
+            9,
+            "De pronto, se les apareció el Angel del Señor y la gloria del Señor los envolvió con su luz. Ellos sintieron un gran temor,"
+          ],
+          [
+            10,
+            "pero el Angel les dijo: «No teman, porque les traigo una buena noticia, una gran alegría para todo el pueblo:"
+          ],
+          [
+            11,
+            "Hoy, en la ciudad de David, les ha nacido un Salvador, que es el Mesías, el Señor."
+          ],
+          [
+            12,
+            "Y esto les servirá de señal: encontrarán a un niño recién nacido envuelto en pañales y acostado en un pesebre»."
+          ],
+          [
+            13,
+            "Y junto con el Angel, apareció de pronto una multitud del ejército celestial, que alababa a Dios, diciendo:"
+          ],
+          [
+            14,
+            "¡Gloria a Dios en las alturas, y en la tierra, paz a los hombres amados por él»."
+          ],
+          [
+            15,
+            "Después que los ángeles volvieron al cielo, los pastores se decían unos a otros: «Vayamos a Belén, y veamos lo que ha sucedido y que el Señor nos ha anunciado»."
+          ],
+          [
+            16,
+            "Fueron rápidamente y encontraron a María, a José, y al recién nacido acostado en el pesebre."
+          ],
+          [
+            17,
+            "Al verlo, contaron lo que habían oído decir sobre este niño,"
+          ],
+          [
+            18,
+            "y todos los que los escuchaban quedaron admirados de que decían los pastores."
+          ],
+          [
+            19,
+            "Mientras tanto, María conservaba estas cosas y las meditaba en su corazón."
+          ],
+          [
+            20,
+            "Y los pastores volvieron, alabando y glorificando a Dios por todo lo que habían visto y oído, conforme al anuncio que habían recibido."
+          ]
+        ]
+      },
+      {
+        "n": 4,
+        "titulo": "La presentación de Jesús en el Templo y la purificación de María",
+        "cita": "Lc 2, 22-40",
+        "imagen": "gozosos-4.jpg",
+        "lectura": [
+          [
+            22,
+            "Cuando llegó el día fijado por la Ley de Moisés para la purificación, llevaron al niño a Jerusalén para presentarlo al Señor,"
+          ],
+          [
+            23,
+            "como está escrito en la Ley: \"Todo varón primogénito será consagrado al Señor\"."
+          ],
+          [
+            24,
+            "También debían ofrecer un sacrificio un par de tórtolas o de pichones de paloma, como ordena la Ley del Señor."
+          ],
+          [
+            25,
+            "Vivía entonces en Jerusalén un hombre llamado Simeón, que era justo y piadoso, y esperaba el consuelo de Israel. El Espíritu Santo estaba en él"
+          ],
+          [
+            26,
+            "y le había revelado que no moriría antes de ver al Mesías del Señor."
+          ],
+          [
+            27,
+            "Conducido por el mismo Espíritu, fue al Templo, y cuando los padres de Jesús llevaron al niño para cumplir con él las prescripciones de la Ley,"
+          ],
+          [
+            28,
+            "Angel lo tomó en sus brazos y alabó a Dios, diciendo:"
+          ],
+          [
+            29,
+            "«Ahora, Señor, puedes dejar que tu servidor muera en paz, como lo has prometido,"
+          ],
+          [
+            30,
+            "porque mis ojos han visto la salvación"
+          ],
+          [
+            31,
+            "que preparaste delante de todos los pueblos:"
+          ],
+          [
+            32,
+            "luz para iluminar a las naciones paganas y gloria de tu pueblo Israel»."
+          ],
+          [
+            33,
+            "Su padre y su madre estaban admirados por lo que oían decir de él."
+          ],
+          [
+            34,
+            "Simeón, después de bendecirlos, dijo a María, la madre: «Este niño será causa de caída y de elevación para muchos en Israel; será signo de contradicción,"
+          ],
+          [
+            35,
+            "y a ti misma una espada te atravesará el corazón. Así se manifestarán claramente los pensamientos íntimos de muchos»."
+          ],
+          [
+            36,
+            "Había también allí una profetisa llamada Ana, hija de Fanuel, de la familia de Aser, mujer ya entrada en años, que, casa en su juventud, había vivido siete años con su marido."
+          ],
+          [
+            37,
+            "Desde entonces había permanecido viuda, y tenía ochenta y cuatro años. No se apartaba del Templo, sirviendo a Dios noche y día con ayunos y oraciones."
+          ],
+          [
+            38,
+            "Se presentó en ese mismo momento y se puso a dar gracias a Dios. Y hablaba acerca del niño a todos los que esperaban la redención de Jerusalén."
+          ],
+          [
+            39,
+            "Después de cumplir todo lo que ordenaba la Ley del Señor, volvieron a su ciudad de Nazaret, en Galilea."
+          ],
+          [
+            40,
+            "El niño iba creciendo y se fortalecía, lleno de sabiduría, y la gracia de Dios estaba con él."
+          ]
+        ]
+      },
+      {
+        "n": 5,
+        "titulo": "María y José encuentran a Jesús en el Templo",
+        "cita": "Lc 2, 41-52",
+        "imagen": "gozosos-5.jpg",
+        "lectura": [
+          [
+            41,
+            "Sus padres iban todos los años a Jerusalén en la fiesta de la Pascua."
+          ],
+          [
+            42,
+            "Cuando el niño cumplió doce años, subieron como de costumbre,"
+          ],
+          [
+            43,
+            "y acababa la fiesta, María y José regresaron, pero Jesús permaneció en Jerusalén sin que ellos se dieran cuenta."
+          ],
+          [
+            44,
+            "Creyendo que estaba en la caravana, caminaron todo un día y después comenzaron a buscarlo entre los parientes y conocidos."
+          ],
+          [
+            45,
+            "Como no lo encontraron, volvieron a Jerusalén en busca de él."
+          ],
+          [
+            46,
+            "Al tercer día, lo hallaron en el Templo en medio de los doctores de la Ley, escuchándolos y haciéndoles preguntas."
+          ],
+          [
+            47,
+            "Y todos los que los oían estaban asombrados de su inteligencia y sus respuestas."
+          ],
+          [
+            48,
+            "Al ver, sus padres quedaron maravillados y su madre le dijo: «Hijo mío, ¿por qué nos has hecho esto? Piensa que tu padre y yo te buscábamos angustiados»."
+          ],
+          [
+            49,
+            "Jesús les respondió: «¿Por qué me buscaban? ¿No sabían que yo debo ocuparme de los asuntos de mi Padre?»."
+          ],
+          [
+            50,
+            "Ellos no entendieron lo que les decía."
+          ],
+          [
+            51,
+            "El regresó con sus padres a Nazaret y vivía sujeto a ellos. Su madre conservaba estas cosas en su corazón."
+          ],
+          [
+            52,
+            "Jesús iba creciendo en sabiduría, en estatura y en gracia, delante de Dios y de los hombres."
+          ]
+        ]
+      }
+    ]
+  },
+  "luminosos": {
+    "titulo": "Misterios Luminosos",
+    "dias": [
+      4
+    ],
+    "imagen": "luminosos.jpg",
+    "misterios": [
+      {
+        "n": 1,
+        "titulo": "El Bautismo de Jesús en el Jordán",
+        "cita": "Mt 3, 13-17",
+        "imagen": "luminosos-1.jpg",
+        "lectura": [
+          [
+            13,
+            "Entonces Jesús fue desde Galilea hasta el Jordán y se presentó a Juan para ser bautizado por él."
+          ],
+          [
+            14,
+            "Juan se resistía, diciéndole: «Soy yo el que tiene necesidad de ser bautizado por ti, ¡y eres tú el que viene a mi encuentro!»."
+          ],
+          [
+            15,
+            "Pero Jesús le respondió: «Ahora déjame hacer esto, porque conviene que así cumplamos todo lo que es justo». Y Juan se lo permitió."
+          ],
+          [
+            16,
+            "Apenas fue bautizado, Jesús salió del agua. En ese momento se abrieron los cielos, y vio al Espíritu de Dios descender como una paloma y dirigirse hacia él."
+          ],
+          [
+            17,
+            "Y se oyó una voz del cielo que decía: «Este es mi Hijo muy querido, en quien tengo puesta toda mi predilección»."
+          ]
+        ]
+      },
+      {
+        "n": 2,
+        "titulo": "La autorrevelación de Jesús en las bodas de Caná",
+        "cita": "Jn 2, 1-12",
+        "imagen": "luminosos-2.jpg",
+        "lectura": [
+          [
+            1,
+            "Tres días después se celebraron unas bodas en Caná de Galilea, y la madre de Jesús estaba allí."
+          ],
+          [
+            2,
+            "Jesús también fue invitado con sus discípulos."
+          ],
+          [
+            3,
+            "Y como faltaba vino, la madre de Jesús le dijo: «No tienen vino»."
+          ],
+          [
+            4,
+            "Jesús le respondió: «Mujer, ¿qué tenemos que ver nosotros? Mi hora no ha llegado todavía»."
+          ],
+          [
+            5,
+            "Pero su madre dijo a los sirvientes: «Hagan todo lo que él les diga»."
+          ],
+          [
+            6,
+            "Había allí seis tinajas de piedra destinadas a los ritos de purificación de los judíos, que contenían unos cien litros cada una."
+          ],
+          [
+            7,
+            "Jesús dijo a los sirvientes: «Llenen de agua estas tinajas». Y las llenaron hasta el borde."
+          ],
+          [
+            8,
+            "«Saquen ahora, agregó Jesús, y lleven al encargado del banquete». Así lo hicieron."
+          ],
+          [
+            9,
+            "El encargado probó el agua cambiada en vino y como ignoraba su o rigen, aunque lo sabían los sirvientes que habían sacado el agua, llamó al esposo"
+          ],
+          [
+            10,
+            "y les dijo: «Siempre se sirve primero el buen vino y cuando todos han bebido bien, se trae el de inferior calidad. Tú, en cambio, has guardado el buen vino hasta este momento»."
+          ],
+          [
+            11,
+            "Este fue el primero de los signos de Jesús, y lo hizo en Caná de Galilea. Así manifestó su gloria, y sus discípulos creyeron en él."
+          ],
+          [
+            12,
+            "Después de esto, descendió a Cafarnaúm con su madre, sus hermanos y sus discípulos, y permanecieron allí unos pocos días."
+          ]
+        ]
+      },
+      {
+        "n": 3,
+        "titulo": "El anuncio del Reino de Dios invitando a la conversión",
+        "cita": "Mc 1, 14-15",
+        "imagen": "luminosos-3.jpg",
+        "lectura": [
+          [
+            14,
+            "Después que Juan fue arrestado, Jesús se dirigió a Galilea. Allí proclamaba la Buena Noticia de Dios, diciendo:"
+          ],
+          [
+            15,
+            "«El tiempo se ha cumplido: el Reino de Dios está cerca. Conviértanse y crean en la Buena Noticia». Los primeros discípulos"
+          ]
+        ]
+      },
+      {
+        "n": 4,
+        "titulo": "La Transfiguración",
+        "cita": "Lc 9, 28-36",
+        "imagen": "luminosos-4.jpg",
+        "lectura": [
+          [
+            28,
+            "Unos ocho días después de decir esto, Jesús tomó a Pedro, Juan y Santiago, y subió a la montaña para orar."
+          ],
+          [
+            29,
+            "Mientras oraba, su rostro cambió de aspecto y sus vestiduras se volvieron de una blancura deslumbrante."
+          ],
+          [
+            30,
+            "Y dos hombres conversaban con él: eran Moisés y Elías,"
+          ],
+          [
+            31,
+            "que aparecían revestidos de gloria y hablaban de la partida de Jesús, que iba a cumplirse en Jerusalén."
+          ],
+          [
+            32,
+            "Pedro y sus compañeros tenían mucho sueño, pero permanecieron despiertos, y vieron la gloria de Jesús y a los dos hombres que estaban con él."
+          ],
+          [
+            33,
+            "Mientras estos se alejaban, Pedro dijo a Jesús: «¡Maestro, ¡qué bien estamos aquí! Hagamos tres carpas, una para ti, otra para Moisés y otra para Elías». El no sabía lo que decía."
+          ],
+          [
+            34,
+            "Mientras hablaba, una nube los cubrió con su sombra y al entrar en ella, los discípulos se llenaron de temor."
+          ],
+          [
+            35,
+            "Desde la nube se oyó entonces una voz que decía: «Este es mi Hijo, el Elegido, escúchenlo»."
+          ],
+          [
+            36,
+            "Y cuando se oyó la voz, Jesús estaba solo. Los discípulos callaron y durante todo ese tiempo no dijeron a nadie lo que habían visto."
+          ]
+        ]
+      },
+      {
+        "n": 5,
+        "titulo": "La institución de la Eucaristía",
+        "cita": "Mt 26, 26-29",
+        "imagen": "luminosos-5.jpg",
+        "lectura": [
+          [
+            26,
+            "Mientras comían, Jesús tomó el pan, pronunció la bendición, lo partió y lo dio a sus discípulos, diciendo: «Tomen y coman, esto es mi Cuerpo»."
+          ],
+          [
+            27,
+            "Después tomó una copa, dio gracias y se la entregó, diciendo: «Beban todos de ella,"
+          ],
+          [
+            28,
+            "porque esta es mi Sangre, la Sangre de la Alianza, que se derrama por muchos para la remisión de los pecados."
+          ],
+          [
+            29,
+            "Les aseguro que desde ahora no beberé más de este fruto de la vid, hasta el día en que beba con ustedes el vino nuevo en el Reino de mi Padre»."
+          ]
+        ]
+      }
+    ]
+  },
+  "dolorosos": {
+    "titulo": "Misterios Dolorosos",
+    "dias": [
+      2,
+      5
+    ],
+    "imagen": "dolorosos.jpg",
+    "misterios": [
+      {
+        "n": 1,
+        "titulo": "La oración y agonía de Jesús en el huerto de Getsemaní",
+        "cita": "Mt 26, 36-46",
+        "imagen": "dolorosos-1.jpg",
+        "lectura": [
+          [
+            36,
+            "Cuando Jesús llegó con sus discípulos a una propiedad llamada Getsemaní, les dijo: «Quédense aquí, mientras yo voy allí a orar»."
+          ],
+          [
+            37,
+            "Y llevando con él a Pedro y a los dos hijos de Zebedeo, comenzó a entristecerse y a angustiarse."
+          ],
+          [
+            38,
+            "Entonces les dijo: «Mi alma siente una tristeza de muerte. Quédense aquí, velando conmigo»."
+          ],
+          [
+            39,
+            "Y adelantándose un poco, cayó con el rostro en tierra, orando así: «Padre mío, si es posible, que pase lejos de mí este cáliz, pero no se haga mi voluntad, sino la tuya»."
+          ],
+          [
+            40,
+            "Después volvió junto a sus discípulos y los encontró durmiendo. Jesús dijo a Pedro: «¿Es posible que no hayan podido quedarse despiertos conmigo, ni siquiera una hora?"
+          ],
+          [
+            41,
+            "Estén prevenidos y oren para no caer en tentación, porque el espíritu está dispuesto, pero la carne es débil»."
+          ],
+          [
+            42,
+            "Se alejó por segunda vez y suplicó: «Padre mío, si no puede pasar este cáliz sin que yo lo beba, que se haga tu voluntad»."
+          ],
+          [
+            43,
+            "Al regresar los encontró otra vez durmiendo, porque sus ojos se cerraban de sueño."
+          ],
+          [
+            44,
+            "Nuevamente se alejó de ellos y oró por tercera vez, repitiendo las mismas palabras."
+          ],
+          [
+            45,
+            "Luego volvió junto a sus discípulos y les dijo: «Ahora pueden dormir y descansar: ha llegado la hora en que el Hijo del hombre va a ser entregado en manos de los pecadores."
+          ],
+          [
+            46,
+            "¡Levántense! ¡Vamos! Ya se acerca el que me va a entregar»."
+          ]
+        ]
+      },
+      {
+        "n": 2,
+        "titulo": "La flagelación de Jesús",
+        "cita": "Jn 19, 1",
+        "imagen": "dolorosos-2.jpg",
+        "lectura": [
+          [
+            1,
+            "Pilato mandó entonces azotar a Jesús."
+          ]
+        ]
+      },
+      {
+        "n": 3,
+        "titulo": "La coronación de espinas",
+        "cita": "Mt 27, 27-31",
+        "imagen": "dolorosos-3.jpg",
+        "lectura": [
+          [
+            27,
+            "Los soldados del gobernador llevaron a Jesús al pretorio y reunieron a toda la guardia alrededor de él."
+          ],
+          [
+            28,
+            "Entonces lo desvistieron y le pusieron un manto rojo."
+          ],
+          [
+            29,
+            "Luego tejieron una corona de espinas y la colocaron sobre su cabeza, pusieron una caña en su mano derecha y, doblando la rodilla delante de él, se burlaban, diciendo: «Salud, rey de los judíos»."
+          ],
+          [
+            30,
+            "Y escupiéndolo, le quitaron la caña y con ella le golpeaban la cabeza."
+          ],
+          [
+            31,
+            "Después de haberse burlado de él, le quitaron el manto, le pusieron de nuevo sus vestiduras y lo llevaron a crucificar."
+          ]
+        ]
+      },
+      {
+        "n": 4,
+        "titulo": "Jesús con la Cruz a cuestas camino del Calvario",
+        "cita": "Lc 23, 26-32",
+        "imagen": "dolorosos-4.jpg",
+        "lectura": [
+          [
+            26,
+            "Cuando lo llevaban, detuvieron a un tal Simón de Cirene, que volvía del campo, y lo cargaron con la cruz, para que la llevara detrás de Jesús."
+          ],
+          [
+            27,
+            "Lo seguían muchos del pueblo y un buen número de mujeres, que se golpeaban el pecho y se lamentaban por él."
+          ],
+          [
+            28,
+            "Pero Jesús, volviéndose hacia ellas, les dijo: «¡Hijas de Jerusalén!, no lloren por mí; lloren más bien por ustedes y por sus hijos."
+          ],
+          [
+            29,
+            "Porque se acerca el tiempo en que se dirá: \"¡Felices las estériles, felices los senos que no concibieron y los pechos que no amamantaron!\""
+          ],
+          [
+            30,
+            "Entonces se dirá a las montañas: \"¡Caigan sobre nosotros!\", y a los cerros: \"¡Sepúltennos!\""
+          ],
+          [
+            31,
+            "Porque si así tratan a la leña verde, ¿qué será de la leña seca?»."
+          ],
+          [
+            32,
+            "Con él llevaban también a otros dos malhechores, para ser ejecutados."
+          ]
+        ]
+      },
+      {
+        "n": 5,
+        "titulo": "La crucifixión y muerte de Nuestro Señor",
+        "cita": "Lc 23, 33-46",
+        "imagen": "dolorosos-5.jpg",
+        "lectura": [
+          [
+            33,
+            "Cuando llegaron al lugar llamado «del Cráneo», lo crucificaron junto con los malhechores, uno a su derecha y el otro a su izquierda."
+          ],
+          [
+            34,
+            "Jesús decía: «Padre, perdónalos, porque no saben lo que hacen». Después se repartieron sus vestiduras, sorteándolas entre ellos."
+          ],
+          [
+            35,
+            "El pueblo permanecía allí y miraba. Sus jefes, burlándose, decían: «Ha salvado a otros: ¡que se salve a sí mismo, si es el Mesías de Dios, el Elegido!»."
+          ],
+          [
+            36,
+            "También los soldados se burlaban de él y, acercándose para ofrecerle vinagre,"
+          ],
+          [
+            37,
+            "le decían: «Si eres el rey de los judíos, ¡sálvate a ti mismo!»."
+          ],
+          [
+            38,
+            "Sobre su cabeza había una inscripción: «Este es el rey de los judíos»."
+          ],
+          [
+            39,
+            "Uno de los malhechores crucificados lo insultaba, diciendo: «¿No eres tú el Mesías? Sálvate a ti mismo y a nosotros»."
+          ],
+          [
+            40,
+            "Pero el otro lo increpaba, diciéndole: «¿No tienes temor de Dios, tú que sufres la misma pena que él?"
+          ],
+          [
+            41,
+            "Nosotros la sufrimos justamente, porque pagamos nuestras culpas, pero él no ha hecho nada malo»."
+          ],
+          [
+            42,
+            "Y decía: «Jesús, acuérdate de mí cuando vengas a establecer tu Reino»."
+          ],
+          [
+            43,
+            "El le respondió: «Yo te aseguro que hoy estarás conmigo en el Paraíso»."
+          ],
+          [
+            44,
+            "Era alrededor del mediodía. El sol se eclipsó y la oscuridad cubrió toda la tierra hasta las tres de la tarde."
+          ],
+          [
+            45,
+            "El velo del Templo se rasgó por el medio."
+          ],
+          [
+            46,
+            "Jesús, con un grito, exclamó: «Padre, en tus manos encomiendo mi espíritu». Y diciendo esto, expiró."
+          ]
+        ]
+      }
+    ]
+  },
+  "gloriosos": {
+    "titulo": "Misterios Gloriosos",
+    "dias": [
+      3,
+      0
+    ],
+    "imagen": "gloriosos.jpg",
+    "misterios": [
+      {
+        "n": 1,
+        "titulo": "La Resurrección de Jesús",
+        "cita": "Mt 28, 1-10",
+        "imagen": "gloriosos-1.jpg",
+        "lectura": [
+          [
+            1,
+            "Pasado el sábado, al amanecer del primer día de la semana, María Magdalena y la otra María fueron a visitar el sepulcro."
+          ],
+          [
+            2,
+            "De pronto, se produjo un gran temblor de tierra: el Angel del Señor bajó del cielo, hizo rodar la piedra del sepulcro y se sentó sobre ella."
+          ],
+          [
+            3,
+            "Su aspecto era como el de un relámpago y sus vestiduras eran blancas como la nieve."
+          ],
+          [
+            4,
+            "Al verlo, los guardias temblaron de espanto y quedaron como muertos."
+          ],
+          [
+            5,
+            "El Angel dijo a las mujeres: «No teman, yo sé que ustedes buscan a Jesús, el Crucificado."
+          ],
+          [
+            6,
+            "No está aquí, porque ha resucitado como lo había dicho. Vengan a ver el lugar donde estaba,"
+          ],
+          [
+            7,
+            "y vayan en seguida a decir a sus discípulos: «Ha resucitado de entre los muertos, e irá antes que ustedes a Galilea: allí lo verán». Esto es lo que tenía que decirles»."
+          ],
+          [
+            8,
+            "Las mujeres, atemorizadas pero llenas de alegría, se alejaron rápidamente del sepulcro y fueron a dar la noticia a los discípulos."
+          ],
+          [
+            9,
+            "De pronto, Jesús salió a su encuentro y las saludó, diciendo: «Alégrense». Ellas se acercaron y, abrazándole los pies, se postraron delante de él."
+          ],
+          [
+            10,
+            "Y Jesús les dijo: «No teman; avisen a mis hermanos que vayan a Galilea, y allí me verán»."
+          ]
+        ]
+      },
+      {
+        "n": 2,
+        "titulo": "La Ascensión de Jesús al cielo",
+        "cita": "Hch 1, 6-11",
+        "imagen": "gloriosos-2.jpg",
+        "lectura": [
+          [
+            6,
+            "Los que estaban reunidos le preguntaron: «Señor, ¿es ahora cuando vas a restaurar el reino de Israel?»."
+          ],
+          [
+            7,
+            "El les respondió: «No les corresponde a ustedes conocer el tiempo y el momento que el Padre ha establecido con su propia autoridad."
+          ],
+          [
+            8,
+            "Pero recibirán la fuerza del Espíritu Santo que descenderá sobre ustedes, y serán mis testigos en Jerusalén, en toda Judea y Samaría, y hasta los confines de la tierra»."
+          ],
+          [
+            9,
+            "Dicho esto, los Apóstoles lo vieron elevarse, y una nube lo ocultó de la vista de ellos."
+          ],
+          [
+            10,
+            "Como permanecían con la mirada puesta en el cielo mientras Jesús subía, se les aparecieron dos hombres vestidos de blanco,"
+          ],
+          [
+            11,
+            "que les dijeron: «Hombres de Galilea, ¿por qué siguen mirando al cielo? Este Jesús que les ha sido quitado y fue elevado al cielo, vendrá de la misma manera que lo han visto partir»."
+          ]
+        ]
+      },
+      {
+        "n": 3,
+        "titulo": "La venida del Espíritu Santo sobre María y los Apóstoles",
+        "cita": "Hch 2, 1-13",
+        "imagen": "gloriosos-3.jpg",
+        "lectura": [
+          [
+            1,
+            "Al llegar el día de Pentecostés, estaban todos reunidos en el mismo lugar."
+          ],
+          [
+            2,
+            "De pronto, vino del cielo un ruido, semejante a una fuerte ráfaga de viento, que resonó en toda la casa donde se encontraban."
+          ],
+          [
+            3,
+            "Entonces vieron aparecer unas lenguas como de fuego, que descendieron por separado sobre cada uno de ellos."
+          ],
+          [
+            4,
+            "Todos quedaron llenos del Espíritu Santo, y comenzaron a hablar en distintas lenguas, según el Espíritu les permitía expresarse."
+          ],
+          [
+            5,
+            "Había en Jerusalén judíos piadosos, venidos de todas las naciones del mundo."
+          ],
+          [
+            6,
+            "Al oírse este ruido, se congregó la multitud y se llenó de asombro, porque cada uno los oía hablar en su propia lengua."
+          ],
+          [
+            7,
+            "Con gran admiración y estupor decían: «¿Acaso estos hombres que hablan no son todos galileos?"
+          ],
+          [
+            8,
+            "¿Cómo es que cada uno de nosotros los oye en su propia lengua?"
+          ],
+          [
+            9,
+            "Partos, medos y elamitas, los que habitamos en la Mesopotamia o en la misma Judea, en Capadocia, en el Ponto y en Asia Menor,"
+          ],
+          [
+            10,
+            "en Frigia y Panfilia, en Egipto, en la Libia Cirenaica, los peregrinos de Roma,"
+          ],
+          [
+            11,
+            "judíos y prosélitos, cretenses y árabes, todos los oímos proclamar en nuestras lenguas las maravillas de Dios»."
+          ],
+          [
+            12,
+            "Unos a otros se decían con asombro: «¿Qué significa esto?»."
+          ],
+          [
+            13,
+            "Algunos, burlándose, comentaban: «Han tomado demasiado vino»."
+          ]
+        ]
+      },
+      {
+        "n": 4,
+        "titulo": "La Asunción de María al cielo en cuerpo y alma",
+        "cita": "Ap 12, 1",
+        "imagen": "gloriosos-4.jpg",
+        "lectura": [
+          [
+            1,
+            "Y apareció en el cielo un gran signo: una Mujer revestida del sol, con la luna bajo sus pies y una corona de doce estrellas en su cabeza."
+          ]
+        ]
+      },
+      {
+        "n": 5,
+        "titulo": "La Coronación de María como Reina y Señora de todo lo creado",
+        "cita": "Sal 45, 10-16",
+        "imagen": "gloriosos-5.jpg",
+        "lectura": [
+          [
+            10,
+            "una hija de reyes está de pie a tu derecha:\nes la reina, adornada con tus joyas y con oro de Ofir."
+          ],
+          [
+            11,
+            "¡Escucha, hija mía, mira y presta atención!\nOlvida tu pueblo y tu casa paterna,"
+          ],
+          [
+            12,
+            "y el rey se prendará de tu hermosura.\nEl es tu señor: inclínate ante él;"
+          ],
+          [
+            13,
+            "la ciudad de Tiro vendrá con regalos\ny los grandes del pueblo buscarán tu favor."
+          ],
+          [
+            14,
+            "Embellecida con corales engarzados en oro"
+          ],
+          [
+            15,
+            "y vestida de brocado, es llevada hasta el rey.\nLas vírgenes van detrás, sus compañeras la guían,"
+          ],
+          [
+            16,
+            "con gozo y alegría entran al palacio real."
+          ]
+        ]
+      }
+    ]
+  },
+  "_lectura": "Textos bíblicos: El Libro del Pueblo de Dios (vatican.va)."
+}

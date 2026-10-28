@@ -1,0 +1,121 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { parrafos } from '../lib/texto';
+
+interface Props {
+  oracion: CollectionEntry<'oraciones'>;
+  // Nivel del encabezado con el nombre; false para no mostrarlo.
+  nombre?: 'h1' | 'h2' | false;
+}
+
+const { oracion, nombre = 'h2' } = Astro.props;
+const { data } = oracion;
+const cuerpo = parrafos(oracion.body);
+const Nombre = nombre || 'h2';
+---
+
+<article class="oracion-bloque">
+  {nombre && <Nombre class="oracion-nombre">{data.nombre}</Nombre>}
+  {nombre && <span class="filete" aria-hidden="true"></span>}
+
+  {
+    data.tipo === 'letania' ? (
+      <div class="letania">
+        {data.bloques?.map((b) => (
+          <div class="letania-bloque">
+            {b.respuesta && (
+              <p class="respuesta comun">
+                <span class="marca">R.</span> {b.respuesta}
+              </p>
+            )}
+            <ul>
+              {b.invocaciones.map((inv) =>
+                Array.isArray(inv) ? (
+                  <li>
+                    <span class="oracion">{inv[0]}</span>
+                    <span class="respuesta">
+                      <span class="marca">R.</span> {inv[1]}
+                    </span>
+                  </li>
+                ) : (
+                  <li class="oracion">{inv}</li>
+                ),
+              )}
+            </ul>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="texto">
+        {cuerpo.map((p, i) => (
+          <p class="oracion">
+            {data.tipo === 'versiculo' && i === 0 && <span class="marca">V.</span>}
+            {p.map((linea, j) => (
+              <Fragment>
+                {j > 0 && <br />}
+                {linea}
+              </Fragment>
+            ))}
+          </p>
+        ))}
+        {data.respuesta && (
+          <p class="respuesta">
+            <span class="marca">R.</span> {data.respuesta}
+          </p>
+        )}
+      </div>
+    )
+  }
+
+  {data.nota && <p class="nota cuerpo">{data.nota}</p>}
+  {data.fuente && <p class="fuente etiqueta">{data.fuente}</p>}
+</article>
+
+<style>
+  .oracion-bloque {
+    text-align: center;
+  }
+  .texto,
+  .letania {
+    max-width: 34ch;
+    margin-inline: auto;
+  }
+  .texto p {
+    margin: 0 0 var(--esp-4);
+  }
+  .marca {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--tinta-suave);
+    margin-right: 0.2em;
+  }
+  .letania-bloque {
+    margin-bottom: var(--esp-6);
+  }
+  .letania ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .letania li {
+    padding-block: var(--esp-1);
+  }
+  .letania li > span {
+    display: block;
+  }
+  .comun {
+    margin: 0 0 var(--esp-3);
+  }
+  .nota {
+    max-width: 34ch;
+    margin: var(--esp-5) auto 0;
+    color: var(--tinta-suave);
+    font-style: italic;
+  }
+  .fuente {
+    margin-top: var(--esp-4);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+</style>

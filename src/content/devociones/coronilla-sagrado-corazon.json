@@ -1,0 +1,50 @@
+{
+  "id": "coronilla-sagrado-corazon",
+  "titulo": "Coronilla al Sagrado Corazón de Jesús",
+  "misterios": null,
+  "introduccion": [
+    {
+      "oracion": "senal-de-la-cruz"
+    }
+  ],
+  "peticiones": {
+    "pendiente": true,
+    "nota": "Aquí se piensa la gracia que se pedirá; cada parte termina con «pido la gracia de…»."
+  },
+  "decenas": 3,
+  "decena": [
+    {
+      "oracion": [
+        "sc-pedid-y-recibireis",
+        "sc-pedir-en-mi-nombre",
+        "sc-mis-palabras-no-pasaran"
+      ]
+    },
+    {
+      "oracion": "padre-nuestro"
+    },
+    {
+      "oracion": "ave-maria"
+    },
+    {
+      "oracion": "gloria"
+    },
+    {
+      "oracion": "sagrado-corazon-en-ti-confio"
+    }
+  ],
+  "cierre": [
+    {
+      "oracion": "oh-sagrado-corazon"
+    },
+    {
+      "oracion": "salve"
+    },
+    {
+      "oracion": "san-jose-padre-putativo"
+    },
+    {
+      "oracion": "senal-de-la-cruz"
+    }
+  ]
+}

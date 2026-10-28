@@ -1,0 +1,371 @@
+---
+import { getCollection } from 'astro:content';
+import '../styles/global.css';
+import BotonTema from '../components/BotonTema.astro';
+import Icono from '../components/Icono.astro';
+import { esIcono } from '../lib/iconos';
+import { PRESENTACION } from '../lib/devociones';
+
+interface Props {
+  titulo?: string;
+  descripcion?: string;
+  // Sin pie de página: el reproductor de devociones ocupa la pantalla con sus controles.
+  inmersivo?: boolean;
+}
+
+const { titulo, descripcion = 'Oraciones y rosario, hechos con cariño para mamá.', inmersivo = false } = Astro.props;
+const SITIO = 'Un lugar para orar';
+const tituloCompleto = titulo ? `${titulo} · ${SITIO}` : SITIO;
+
+const secciones = (await getCollection('secciones')).sort((a, b) => a.data.orden - b.data.orden);
+const devociones = (await getCollection('devociones')).sort(
+  (a, b) => (PRESENTACION[a.id]?.orden ?? 99) - (PRESENTACION[b.id]?.orden ?? 99),
+);
+const ruta = Astro.url.pathname.replace(/\/$/, '');
+const activa = (href: string) => ruta === href || ruta.startsWith(href + '/');
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descripcion} />
+    <meta name="theme-color" content="#F3E6CC" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1A1512" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap"
+    />
+    <script is:inline>
+      try {
+        const t = localStorage.getItem('tema');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+  </head>
+  <body class={inmersivo ? 'inmersivo' : undefined}>
+    {
+      (
+        <header class="cabecera">
+          <div class="cabecera-fila contenedor-amplio">
+            <button
+              type="button"
+              class="hamburguesa"
+              aria-label="Abrir menú"
+              aria-controls="cajon"
+              aria-expanded="false"
+              data-abrir-menu
+            >
+              <Icono nombre="menu" />
+            </button>
+            <a href="/" class="marca">
+              {SITIO}
+            </a>
+            <BotonTema />
+          </div>
+
+          <nav class="barra-secciones contenedor-amplio" aria-label="Secciones de oraciones">
+            <ul>
+              <li class="inicio">
+                <a href="/" aria-current={ruta === '' ? 'page' : undefined}>
+                  <Icono nombre="inicio" />
+                  <span>Inicio</span>
+                </a>
+              </li>
+              {secciones.map((s) => (
+                <li>
+                  <a href={`/oraciones/${s.id}`} aria-current={activa(`/oraciones/${s.id}`) ? 'page' : undefined}>
+                    {esIcono(s.id) && <Icono nombre={s.id} />}
+                    <span>{s.data.corto ?? s.data.titulo}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </header>
+
+        <div class="velo" data-cerrar-menu hidden />
+        <aside id="cajon" class="cajon" aria-label="Menú" data-cajon>
+          <div class="cajon-cabeza">
+            <a href="/" class="marca">
+              {SITIO}
+            </a>
+            <button type="button" class="cerrar" aria-label="Cerrar menú" data-cerrar-menu>
+              <Icono nombre="cerrar" />
+            </button>
+          </div>
+          <ul>
+            <li>
+              <a href="/" aria-current={ruta === '' ? 'page' : undefined}>
+                <Icono nombre="inicio" />
+                <span>Inicio</span>
+              </a>
+            </li>
+          </ul>
+          <p class="etiqueta">Devociones</p>
+          <ul>
+            {devociones.map((d) => (
+              <li>
+                <a href={`/rezar/${d.id}`}>
+                  {esIcono(d.id) && <Icono nombre={d.id} />}
+                  <span>{d.data.titulo}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="etiqueta">Oraciones</p>
+          <ul>
+            {secciones.map((s) => (
+              <li>
+                <a href={`/oraciones/${s.id}`} aria-current={activa(`/oraciones/${s.id}`) ? 'page' : undefined}>
+                  {esIcono(s.id) && <Icono nombre={s.id} />}
+                  <span>{s.data.titulo}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+    <slot />
+    {
+      !inmersivo && (
+        <footer class="pie contenedor">
+          <span class="filete" aria-hidden="true" />
+          <p class="etiqueta">Hecho con cariño para mamá</p>
+        </footer>
+      )
+    }
+    <script>
+      // ---------- Tema ----------
+      function temaActual(): 'light' | 'dark' {
+        const t = document.documentElement.dataset.theme;
+        if (t === 'light' || t === 'dark') return t;
+        return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      function pintar() {
+        const modo = temaActual();
+        for (const b of document.querySelectorAll<HTMLButtonElement>('[data-tema]')) {
+          b.dataset.modo = modo;
+          b.setAttribute('aria-label', modo === 'dark' ? 'Cambiar a tema de día' : 'Cambiar a tema de noche');
+        }
+      }
+      document.addEventListener('click', (e) => {
+        if (!(e.target as Element).closest('[data-tema]')) return;
+        const nuevo = temaActual() === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = nuevo;
+        try {
+          localStorage.setItem('tema', nuevo);
+        } catch {}
+        pintar();
+      });
+      matchMedia('(prefers-color-scheme: dark)').addEventListener('change', pintar);
+      pintar();
+
+      // ---------- Menú lateral (celular) ----------
+      const cajon = document.querySelector<HTMLElement>('[data-cajon]');
+      const velo = document.querySelector<HTMLElement>('.velo');
+      const abrir = document.querySelector<HTMLButtonElement>('[data-abrir-menu]');
+      function menu(abierto: boolean) {
+        if (!cajon || !velo || !abrir) return;
+        cajon.classList.toggle('abierto', abierto);
+        velo.hidden = !abierto;
+        abrir.setAttribute('aria-expanded', String(abierto));
+        document.body.style.overflow = abierto ? 'hidden' : '';
+        if (abierto) cajon.querySelector<HTMLElement>('a')?.focus();
+        else abrir.focus({ preventScroll: true });
+      }
+      abrir?.addEventListener('click', () => menu(true));
+      for (const b of document.querySelectorAll('[data-cerrar-menu]')) b.addEventListener('click', () => menu(false));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && cajon?.classList.contains('abierto')) menu(false);
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .cabecera {
+    padding-top: var(--esp-3);
+  }
+  .cabecera-fila {
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+  }
+  .marca {
+    font-family: var(--titulos);
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--tinta);
+    text-decoration: none;
+    margin-right: auto;
+  }
+
+  /* Hamburguesa: solo en celular. */
+  .hamburguesa {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-left: calc(-1 * var(--esp-2));
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--tinta);
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  /* Barra de secciones: una píldora horizontal, como una barra de búsqueda. */
+  .barra-secciones {
+    display: none;
+  }
+  .barra-secciones ul {
+    display: flex;
+    justify-content: center;
+    gap: var(--esp-1);
+    margin: 0;
+    padding: var(--esp-1);
+    list-style: none;
+    background: var(--crema);
+    border: 1px solid var(--veta);
+    border-radius: var(--radio-pill);
+    box-shadow: var(--sombra-tarjeta);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .barra-secciones a {
+    display: flex;
+    align-items: center;
+    gap: var(--esp-2);
+    padding: var(--esp-2) var(--esp-4);
+    border-radius: var(--radio-pill);
+    color: var(--tinta);
+    font-size: 15px;
+    line-height: 22px;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+  .barra-secciones a :global(.icono) {
+    color: var(--acento);
+    font-size: 14px;
+  }
+  .barra-secciones a[aria-current='page'] :global(.icono) {
+    color: inherit;
+  }
+  .barra-secciones .inicio {
+    margin-right: auto;
+  }
+  .barra-secciones .inicio + li {
+    margin-left: auto;
+  }
+  .barra-secciones ul::after {
+    content: '';
+    margin-left: auto;
+  }
+  .barra-secciones a:hover {
+    background: var(--marmol);
+  }
+  .barra-secciones a[aria-current='page'] {
+    background: var(--nogal);
+    color: var(--en-nogal);
+  }
+
+  @media (min-width: 900px) {
+    .hamburguesa {
+      display: none;
+    }
+    .barra-secciones {
+      display: block;
+      margin-top: var(--esp-3);
+    }
+  }
+
+  /* Cajón lateral */
+  .velo {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: rgb(20 14 10 / 0.45);
+    animation: desvanecer 200ms ease both;
+  }
+  .cajon {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 21;
+    width: min(320px, 86vw);
+    padding: var(--esp-4) var(--esp-5) var(--esp-7);
+    overflow-y: auto;
+    background: var(--fondo);
+    border-right: 1px solid var(--veta);
+    box-shadow: var(--sombra-tarjeta);
+    transform: translateX(-105%);
+    visibility: hidden;
+    transition: transform 280ms ease, visibility 0s linear 280ms;
+  }
+  .cajon.abierto {
+    transform: none;
+    visibility: visible;
+    transition: transform 280ms ease;
+  }
+  .cajon-cabeza {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--esp-5);
+  }
+  .cerrar {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: none;
+    color: var(--tinta);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .cajon .etiqueta {
+    margin: var(--esp-5) 0 var(--esp-2);
+  }
+  .cajon ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .cajon li a {
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+    padding: var(--esp-2) 0;
+    font-family: var(--titulos);
+    font-size: 21px;
+    line-height: 26px;
+    font-weight: 600;
+    color: var(--tinta);
+    text-decoration: none;
+  }
+  .cajon li a :global(.icono) {
+    color: var(--acento);
+    font-size: 16px;
+  }
+  .cajon li a[aria-current='page'] {
+    color: var(--acento);
+  }
+
+  .pie {
+    margin-top: var(--esp-8);
+    padding-bottom: var(--esp-7);
+    text-align: center;
+  }
+  .pie .etiqueta {
+    margin: 0;
+  }
+</style>

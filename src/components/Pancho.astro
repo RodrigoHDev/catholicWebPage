@@ -1,0 +1,47 @@
+---
+import { PANCHO, panchoImg, type Pose } from '../lib/pancho';
+
+interface Props {
+  pose: Pose;
+  frase?: string | false; // false = sin frase
+  tamano?: number; // 64–120px; 120 solo en celebraciones
+  lado?: 'izq' | 'der';
+  class?: string;
+}
+
+const { pose, frase, tamano = 88, lado = 'der', class: clase } = Astro.props;
+const img = panchoImg(pose);
+const texto = frase === false ? null : (frase ?? PANCHO[pose].frase);
+---
+
+<figure class:list={['pancho', `pancho-${lado}`, clase]} style={`--tam: ${tamano}px`}>
+  <img src={img.src} width={tamano} height={tamano} alt={PANCHO[pose].alt} loading="lazy" decoding="async" />
+  {texto && <figcaption class="gag">{texto}</figcaption>}
+</figure>
+
+<style is:global>
+  .pancho {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--esp-2);
+    margin: 0;
+    animation: aparecer 300ms ease both;
+  }
+  .pancho img {
+    width: var(--tam);
+    height: var(--tam);
+    flex: none;
+  }
+  .pancho-der {
+    flex-direction: row-reverse;
+    margin-left: auto;
+    text-align: right;
+  }
+  .pancho-izq {
+    margin-right: auto;
+  }
+  figcaption {
+    max-width: 22ch;
+    padding-bottom: var(--esp-3);
+  }
+</style>

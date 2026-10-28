@@ -1,0 +1,90 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Pancho from '../../components/Pancho.astro';
+import Icono from '../../components/Icono.astro';
+import { esIcono } from '../../lib/iconos';
+
+const secciones = (await getCollection('secciones')).sort((a, b) => a.data.orden - b.data.orden);
+const oraciones = await getCollection('oraciones');
+const cuantas = (id: string) => oraciones.filter((o) => o.data.seccion === id).length;
+---
+
+<Base titulo="Oraciones">
+  <main class="contenedor">
+    <header class="centrado encabezado">
+      <h1 class="titulo">Oraciones</h1>
+      <span class="filete" aria-hidden="true"></span>
+      <p class="subtitulo suave">Todas, completas, para rezarlas cuando quieras.</p>
+    </header>
+    <ul class="lista">
+      {
+        secciones.map((s) => (
+          <li>
+            <a class="tarjeta enlace-tarjeta" href={`/oraciones/${s.id}`}>
+              {esIcono(s.id) && (
+                <span class="icono-tarjeta">
+                  <Icono nombre={s.id} />
+                </span>
+              )}
+              <span class="oracion-nombre">{s.data.titulo}</span>
+              <span class="cuerpo suave">{s.data.descripcion}</span>
+              <span class="etiqueta">
+                {cuantas(s.id) === 1 ? '1 oración' : `${cuantas(s.id)} oraciones`}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <Pancho pose="caja" class="final" />
+  </main>
+</Base>
+
+<style>
+  .encabezado {
+    padding-block: var(--esp-6) var(--esp-6);
+  }
+  .encabezado .subtitulo {
+    margin: 0;
+  }
+  .lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--esp-3);
+  }
+  .enlace-tarjeta {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: 2px;
+    padding: var(--esp-4);
+    border-top: 3px solid var(--acento);
+    color: var(--tinta);
+    text-decoration: none;
+  }
+  .icono-tarjeta {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: var(--esp-1);
+    border-radius: 50%;
+    background: var(--acento);
+    color: var(--fondo);
+    font-size: 15px;
+  }
+  .enlace-tarjeta .oracion-nombre {
+    font-size: 21px;
+    line-height: 26px;
+  }
+  .enlace-tarjeta .cuerpo {
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .final {
+    margin-top: var(--esp-6);
+  }
+</style>

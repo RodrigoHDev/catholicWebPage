@@ -1,0 +1,26 @@
+---
+import { ICONOS, type NombreIcono } from '../lib/iconos';
+
+interface Props {
+  nombre: NombreIcono;
+  class?: string;
+}
+
+const { nombre, class: clase } = Astro.props;
+const [ancho, alto, , , trazo] = ICONOS[nombre].icon;
+const d = Array.isArray(trazo) ? trazo.join(' ') : trazo;
+---
+
+<svg class:list={['icono', clase]} viewBox={`0 0 ${ancho} ${alto}`} aria-hidden="true" focusable="false">
+  <path fill="currentColor" d={d}></path>
+</svg>
+
+<style is:global>
+  .icono {
+    width: 1em;
+    height: 1em;
+    flex: none;
+    display: inline-block;
+    vertical-align: -0.125em;
+  }
+</style>
