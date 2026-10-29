@@ -17,8 +17,8 @@
     }
   ],
   "peticiones": {
-    "pendiente": true,
-    "nota": "Intenciones antes de la primera decena."
+    "pendiente": false,
+    "nota": "Antes de la primera decena, ofrecemos nuestras intenciones."
   },
   "decenas": 5,
   "decena": [

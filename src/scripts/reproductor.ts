@@ -1,5 +1,6 @@
 import type { Paso } from '../lib/devociones';
 import { grupoDeHoy, esDeNoche } from '../lib/hoy';
+import { peticiones as peticionesDb } from '../lib/supabase';
 
 interface Grupo {
   id: string;
@@ -13,6 +14,8 @@ interface Datos {
   palabraDecena: string;
   conCuentas: boolean;
   pasos: Paso[];
+  // De src/content/peticiones.json; las de Supabase se suman al cargar (solo con sesión).
+  peticiones: string[];
   grupos: Grupo[];
   pancho: Record<string, { src: string; alt: string }>;
 }
@@ -63,6 +66,14 @@ export function iniciarReproductor(datos: Datos) {
   let anterior: Paso | null = null;
   let cuentaActual = -2;
   let grupo: Grupo | null = grupoDeHoy(datos.grupos) ?? datos.grupos[0] ?? null;
+  let peticiones = datos.peticiones;
+  if (pasos.some((p) => p.peticiones)) {
+    peticionesDb().then((nuevas) => {
+      peticiones = [...datos.peticiones, ...nuevas.map((p) => p.texto)];
+      // Si ya está en pantalla, se redibuja con la lista completa.
+      if (pasos[i]?.peticiones) dibujarContenido(pasos[i]);
+    });
+  }
 
   // ---------- Selector de misterios ----------
 
@@ -123,6 +134,7 @@ export function iniciarReproductor(datos: Datos) {
 
   function etiquetaFase(p: Paso): string {
     if (p.fase === 'introduccion') return 'Introducción';
+    if (p.fase === 'peticiones') return 'Peticiones';
     if (p.fase === 'cierre') return 'Cierre';
     return `${datos.palabraDecena} ${p.decena} de ${datos.decenas}`;
   }
@@ -156,7 +168,9 @@ export function iniciarReproductor(datos: Datos) {
 
     if (p.grupo) caja.append(el('p', 'subtitulo suave centrado grupo', p.grupo));
 
-    if (p.anuncio && grupo) {
+    if (p.peticiones) {
+      caja.append(dibujarPeticiones(p.peticiones.nota));
+    } else if (p.anuncio && grupo) {
       const plantilla = document.querySelector<HTMLTemplateElement>(
         `template[data-misterio="${grupo.id}-${p.decena ?? 1}"]`,
       );
@@ -173,6 +187,21 @@ export function iniciarReproductor(datos: Datos) {
     }
 
     contenido.append(caja);
+  }
+
+  function dibujarPeticiones(nota: string) {
+    const bloque = el('div', 'contenedor peticiones');
+    const filete = el('span', 'filete');
+    filete.setAttribute('aria-hidden', 'true');
+    bloque.append(el('h2', 'oracion-nombre', 'Nuestras peticiones'), filete, el('p', 'subtitulo suave', nota));
+    if (peticiones.length) {
+      const lista = el('ul', 'lista-peticiones');
+      lista.append(...peticiones.map((t) => el('li', 'oracion', t)));
+      bloque.append(lista);
+    } else {
+      bloque.append(el('p', 'cuerpo suave', 'Ofrece en silencio tus intenciones.'));
+    }
+    return bloque;
   }
 
   function dibujarAnillo(p: Paso) {

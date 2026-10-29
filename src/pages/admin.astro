@@ -1,0 +1,489 @@
+---
+// Agregar peticiones, categorías y oraciones a Supabase. Se entra con un enlace por correo;
+// solo las personas invitadas desde el panel de Supabase pueden iniciar sesión.
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const secciones = (await getCollection('secciones'))
+  .sort((a, b) => a.data.orden - b.data.orden)
+  .map((s) => ({ id: s.id, titulo: s.data.titulo }));
+---
+
+<Base titulo="Agregar">
+  <main class="contenedor admin">
+    <header class="centrado encabezado">
+      <h1 class="titulo">Agregar</h1>
+      <span class="filete" aria-hidden="true"></span>
+      <p class="subtitulo suave">Peticiones, secciones y oraciones nuevas.</p>
+    </header>
+
+    <p class="cuerpo suave centrado" data-vista="sin-configurar" hidden>
+      Falta conectar Supabase: copia <code>.env.example</code> a <code>.env</code> con la URL y la clave del proyecto.
+    </p>
+
+    <!-- Sin sesión -->
+    <form class="tarjeta panel" data-vista="entrar" data-entrar hidden>
+      <h2 class="oracion-nombre">Entrar</h2>
+      <p class="cuerpo suave">Te mandamos un enlace a tu correo para entrar, sin contraseña.</p>
+      <label>
+        <span class="etiqueta">Correo</span>
+        <input type="email" name="email" required autocomplete="email" />
+      </label>
+      <button class="boton boton-principal" type="submit">Enviarme el enlace</button>
+      <p class="cuerpo aviso" data-aviso aria-live="polite"></p>
+    </form>
+
+    <!-- Con sesión -->
+    <div data-vista="panel" hidden>
+      <p class="cuerpo suave centrado sesion">
+        <span data-correo></span> · <button type="button" class="boton boton-secundario" data-salir>Salir</button>
+      </p>
+
+      <section class="tarjeta panel">
+        <h2 class="oracion-nombre">Peticiones</h2>
+        <p class="cuerpo suave">Aparecen al comenzar el Rosario y las coronillas. Solo las ve quien inició sesión.</p>
+        <form data-form="peticion">
+          <label>
+            <span class="etiqueta">Petición</span>
+            <textarea name="texto" rows="2" required maxlength="500"></textarea>
+          </label>
+          <button class="boton boton-principal" type="submit">Agregar petición</button>
+        </form>
+        <ul class="registros" data-lista="peticiones"></ul>
+      </section>
+
+      <section class="tarjeta panel">
+        <h2 class="oracion-nombre">Secciones nuevas</h2>
+        <p class="cuerpo suave">Una sección nueva aparece en «Oraciones», después de las de siempre.</p>
+        <form data-form="categoria">
+          <label>
+            <span class="etiqueta">Título</span>
+            <input name="titulo" required maxlength="80" />
+          </label>
+          <label>
+            <span class="etiqueta">Descripción breve</span>
+            <input name="descripcion" maxlength="200" />
+          </label>
+          <label>
+            <span class="etiqueta">Orden</span>
+            <input name="orden" type="number" value="100" />
+          </label>
+          <button class="boton boton-principal" type="submit">Agregar sección</button>
+        </form>
+        <ul class="registros" data-lista="categorias"></ul>
+      </section>
+
+      <section class="tarjeta panel">
+        <h2 class="oracion-nombre">Oraciones</h2>
+        <form data-form="oracion">
+          <p class="etiqueta editando" data-editando hidden></p>
+          <label>
+            <span class="etiqueta">Nombre</span>
+            <input name="nombre" required maxlength="120" />
+          </label>
+          <label>
+            <span class="etiqueta">Sección</span>
+            <select name="grupo" required data-grupos></select>
+          </label>
+          <label>
+            <span class="etiqueta">Tipo</span>
+            <select name="tipo">
+              <option value="oracion">Oración</option>
+              <option value="jaculatoria">Jaculatoria</option>
+              <option value="versiculo">Versículo (V. y R.)</option>
+            </select>
+          </label>
+          <label>
+            <span class="etiqueta">Texto</span>
+            <textarea name="texto" rows="8" required></textarea>
+            <span class="ayuda">Un salto de línea cambia de verso; una línea vacía empieza otro párrafo.</span>
+          </label>
+          <label>
+            <span class="etiqueta">Respuesta (opcional)</span>
+            <textarea name="respuesta" rows="2"></textarea>
+            <span class="ayuda">Se muestra con «R.».</span>
+          </label>
+          <label>
+            <span class="etiqueta">Nota (opcional)</span>
+            <input name="nota" />
+          </label>
+          <label>
+            <span class="etiqueta">Fuente (opcional)</span>
+            <input name="fuente" placeholder="p. ej. Lc 1, 46-55" />
+          </label>
+          <label>
+            <span class="etiqueta">Orden</span>
+            <input name="orden" type="number" value="100" />
+            <span class="ayuda">Dentro de su sección, de menor a mayor; van después de las oraciones de siempre.</span>
+          </label>
+          <button class="boton boton-principal" type="submit" data-enviar-oracion>Agregar oración</button>
+          <button class="boton boton-secundario" type="button" data-cancelar-edicion hidden>Cancelar</button>
+        </form>
+        <ul class="registros" data-lista="oraciones"></ul>
+      </section>
+
+      <p class="cuerpo aviso centrado" data-aviso-panel aria-live="polite"></p>
+    </div>
+  </main>
+</Base>
+
+<script type="application/json" id="secciones-fijas" set:html={JSON.stringify(secciones)} />
+<script>
+  import {
+    supabase,
+    categorias,
+    todasLasOraciones,
+    peticiones,
+    grupoDe,
+    urlOracion,
+    urlCategoria,
+    slug,
+    type CategoriaDb,
+    type OracionDb,
+  } from '../lib/supabase';
+  import { el } from '../scripts/dibujar';
+
+  const fijas: { id: string; titulo: string }[] = JSON.parse(document.getElementById('secciones-fijas')!.textContent!);
+  const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
+  const avisoPanel = $('[data-aviso-panel]');
+
+  function vista(cual: string) {
+    for (const v of document.querySelectorAll<HTMLElement>('[data-vista]')) v.hidden = v.dataset.vista !== cual;
+  }
+
+  function avisar(texto: string, error = false) {
+    avisoPanel.textContent = texto;
+    avisoPanel.classList.toggle('error', error);
+  }
+
+  const opcional = (v: FormDataEntryValue | null) => (typeof v === 'string' && v.trim() ? v.trim() : null);
+  const numero = (v: FormDataEntryValue | null) => Number(v) || 100;
+
+  function boton(texto: string, alHacer: () => void) {
+    const b = el('button', 'boton boton-secundario', texto);
+    b.type = 'button';
+    b.addEventListener('click', alHacer);
+    return b;
+  }
+
+  // ---------- Listas ----------
+
+  let nuevas: CategoriaDb[] = [];
+  // /admin?editar=<id> (el enlace «Editar» de cada oración) abre esa oración en el formulario.
+  let editarAlCargar = new URLSearchParams(location.search).get('editar');
+
+  async function cargar() {
+    const [ps, cs, os] = await Promise.all([peticiones(false), categorias(), todasLasOraciones()]);
+    nuevas = cs;
+
+    $('[data-lista="peticiones"]').replaceChildren(
+      ...ps.map((p) => {
+        const li = el('li');
+        const texto = el('span', p.activa ? '' : 'suave', p.texto);
+        li.append(
+          texto,
+          boton(p.activa ? 'Pausar' : 'Reactivar', () => guardar('peticiones', 'update', { activa: !p.activa }, p.id)),
+          boton('Borrar', () => confirm('¿Borrar esta petición?') && guardar('peticiones', 'delete', null, p.id)),
+        );
+        return li;
+      }),
+    );
+
+    $('[data-lista="categorias"]').replaceChildren(
+      ...cs.map((c) => {
+        const li = el('li');
+        const a = el('a', '', c.titulo);
+        a.href = urlCategoria(c);
+        const n = os.filter((o) => o.categoria === c.id).length;
+        li.append(
+          a,
+          boton('Borrar', () => {
+            const aviso = n ? `También se borrarán sus ${n} oraciones. ` : '';
+            if (confirm(`¿Borrar la sección «${c.titulo}»? ${aviso}`)) guardar('categorias', 'delete', null, c.id);
+          }),
+        );
+        return li;
+      }),
+    );
+
+    const titulos = Object.fromEntries([...fijas, ...cs].map((g) => [g.id, g.titulo]));
+    $('[data-lista="oraciones"]').replaceChildren(
+      ...os.map((o) => {
+        const li = el('li');
+        const a = el('a', '', o.nombre);
+        a.href = urlOracion(o);
+        li.append(
+          a,
+          el('span', 'suave', titulos[grupoDe(o)] ?? ''),
+          boton('Editar', () => editar(o)),
+          boton('Borrar', () => {
+            if (!confirm(`¿Borrar «${o.nombre}»?`)) return;
+            if (editando === o.id) dejarDeEditar();
+            guardar('oraciones', 'delete', null, o.id);
+          }),
+        );
+        return li;
+      }),
+    );
+
+    // Las secciones fijas van primero y luego las nuevas; se conserva la elección.
+    const select = $<HTMLSelectElement>('[data-grupos]');
+    const elegido = select.value;
+    const grupo = (titulo: string, opciones: { id: string; titulo: string }[], tipo: string) => {
+      const g = el('optgroup');
+      g.label = titulo;
+      g.append(
+        ...opciones.map((s) => {
+          const op = el('option', '', s.titulo);
+          op.value = `${tipo}:${s.id}`;
+          return op;
+        }),
+      );
+      return g;
+    };
+    select.replaceChildren(grupo('De siempre', fijas, 'seccion'), ...(cs.length ? [grupo('Nuevas', cs, 'categoria')] : []));
+    if (elegido) select.value = elegido;
+
+    if (editarAlCargar) {
+      const o = os.find((x) => x.id === editarAlCargar);
+      editarAlCargar = null;
+      if (o) editar(o);
+    }
+  }
+
+  // ---------- Editar oraciones ----------
+
+  const formOracion = $<HTMLFormElement>('[data-form="oracion"]');
+  const enviarOracion = $<HTMLButtonElement>('[data-enviar-oracion]');
+  const cancelarEdicion = $<HTMLButtonElement>('[data-cancelar-edicion]');
+  const avisoEditando = $('[data-editando]');
+  let editando: string | null = null;
+
+  function editar(o: OracionDb) {
+    editando = o.id;
+    const campos = formOracion.elements as HTMLFormControlsCollection & Record<string, HTMLInputElement>;
+    campos.nombre.value = o.nombre;
+    campos.grupo.value = o.seccion ? `seccion:${o.seccion}` : `categoria:${o.categoria}`;
+    campos.tipo.value = o.tipo;
+    campos.texto.value = o.texto;
+    campos.respuesta.value = o.respuesta ?? '';
+    campos.nota.value = o.nota ?? '';
+    campos.fuente.value = o.fuente ?? '';
+    campos.orden.value = String(o.orden);
+    avisoEditando.textContent = `Editando «${o.nombre}»`;
+    avisoEditando.hidden = false;
+    enviarOracion.textContent = 'Guardar cambios';
+    cancelarEdicion.hidden = false;
+    formOracion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    campos.nombre.focus({ preventScroll: true });
+  }
+
+  function dejarDeEditar() {
+    editando = null;
+    formOracion.reset();
+    avisoEditando.hidden = true;
+    enviarOracion.textContent = 'Agregar oración';
+    cancelarEdicion.hidden = true;
+  }
+
+  cancelarEdicion.addEventListener('click', dejarDeEditar);
+
+  async function guardar(tabla: string, accion: 'insert' | 'update' | 'delete', datos: object | null, id?: string) {
+    const t = supabase!.from(tabla);
+    const { error } =
+      accion === 'insert' ? await t.insert(datos!) : accion === 'update' ? await t.update(datos!).eq('id', id!) : await t.delete().eq('id', id!);
+    if (error) {
+      console.error(error);
+      avisar(mensajeDeError(error.code, error.message), true);
+      return false;
+    }
+    avisar(accion === 'delete' ? 'Borrado.' : 'Guardado.');
+    await cargar();
+    return true;
+  }
+
+  function mensajeDeError(codigo: string, mensaje: string) {
+    if (codigo === '23505') return 'Ya existe una sección con ese nombre.';
+    if (codigo === '23514') return 'Revisa los datos: algún campo no es válido (o el nombre de la sección ya está en uso).';
+    if (codigo === '42501') return 'No tienes permiso. Vuelve a entrar.';
+    return `No se pudo guardar: ${mensaje}`;
+  }
+
+  // ---------- Formularios ----------
+
+  // `editandoId` devuelve el id del registro en edición; sin él, el formulario agrega uno nuevo.
+  function alEnviar(
+    nombre: string,
+    armar: (d: FormData) => [string, object] | string,
+    editandoId: () => string | null = () => null,
+    alTerminar?: () => void,
+  ) {
+    const form = $<HTMLFormElement>(`[data-form="${nombre}"]`);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const r = armar(new FormData(form));
+      if (typeof r === 'string') return avisar(r, true);
+      const boton = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      boton.disabled = true;
+      const id = editandoId();
+      if (await guardar(r[0], id ? 'update' : 'insert', r[1], id ?? undefined)) {
+        if (alTerminar) alTerminar();
+        else form.reset();
+      }
+      boton.disabled = false;
+    });
+  }
+
+  alEnviar('peticion', (d) => ['peticiones', { texto: String(d.get('texto')).trim() }]);
+
+  alEnviar('categoria', (d) => {
+    const titulo = String(d.get('titulo')).trim();
+    const id = slug(titulo);
+    if (!id) return 'El título necesita al menos una letra o número.';
+    if (fijas.some((s) => s.id === id) || nuevas.some((c) => c.id === id) || ['ver', 'categoria'].includes(id)) {
+      return 'Ya existe una sección con ese nombre.';
+    }
+    return ['categorias', { id, titulo, descripcion: String(d.get('descripcion') ?? '').trim(), orden: numero(d.get('orden')) }];
+  });
+
+  alEnviar('oracion', (d) => {
+    const [tipoGrupo, grupo] = String(d.get('grupo')).split(':');
+    return [
+      'oraciones',
+      {
+        nombre: String(d.get('nombre')).trim(),
+        seccion: tipoGrupo === 'seccion' ? grupo : null,
+        categoria: tipoGrupo === 'categoria' ? grupo : null,
+        tipo: d.get('tipo'),
+        texto: String(d.get('texto')).trim(),
+        respuesta: opcional(d.get('respuesta')),
+        nota: opcional(d.get('nota')),
+        fuente: opcional(d.get('fuente')),
+        orden: numero(d.get('orden')),
+      },
+    ];
+  }, () => editando, dejarDeEditar);
+
+  // ---------- Sesión ----------
+
+  const entrar = $<HTMLFormElement>('[data-entrar]');
+  entrar.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const aviso = entrar.querySelector<HTMLElement>('[data-aviso]')!;
+    const email = String(new FormData(entrar).get('email')).trim();
+    const { error } = await supabase!.auth.signInWithOtp({
+      email,
+      // Sin registros abiertos: solo entran las personas invitadas.
+      options: { shouldCreateUser: false, emailRedirectTo: `${location.origin}/admin` },
+    });
+    aviso.classList.toggle('error', !!error);
+    aviso.textContent = error
+      ? 'No pudimos mandar el enlace. ¿Es un correo invitado? Si lo pediste hace poco, espera un minuto.'
+      : 'Listo: revisa tu correo y abre el enlace en este mismo navegador.';
+  });
+
+  $('[data-salir]').addEventListener('click', () => supabase!.auth.signOut());
+
+  if (!supabase) {
+    vista('sin-configurar');
+  } else {
+    // También se dispara al volver del enlace del correo.
+    supabase.auth.onAuthStateChange((_evento, sesion) => {
+      if (sesion) {
+        $('[data-correo]').textContent = sesion.user.email ?? '';
+        vista('panel');
+        // Fuera del callback: supabase-js pide no esperar otras llamadas dentro de él.
+        setTimeout(cargar);
+      } else {
+        vista('entrar');
+      }
+    });
+  }
+</script>
+
+<style>
+  .encabezado {
+    padding-block: var(--esp-6);
+  }
+  .encabezado .subtitulo {
+    margin: 0;
+  }
+  .panel {
+    display: grid;
+    gap: var(--esp-3);
+    margin-bottom: var(--esp-5);
+    padding: var(--esp-5);
+    border-top: 3px solid var(--acento);
+  }
+  .panel h2,
+  .panel p {
+    margin: 0;
+  }
+  form {
+    display: grid;
+    gap: var(--esp-3);
+  }
+  label {
+    display: grid;
+    gap: var(--esp-1);
+  }
+  input,
+  textarea,
+  select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--esp-2) var(--esp-3);
+    font: inherit;
+    font-family: var(--texto);
+    font-size: 17px;
+    color: var(--tinta);
+    background: var(--fondo);
+    border: 1px solid var(--veta);
+    border-radius: var(--radio-md);
+  }
+  textarea {
+    resize: vertical;
+    line-height: 28px;
+  }
+  .editando {
+    margin: 0;
+    color: var(--acento);
+  }
+  .ayuda {
+    font-size: 14px;
+    color: var(--tinta-suave);
+  }
+  .sesion {
+    margin: 0 0 var(--esp-4);
+  }
+  .aviso:empty {
+    display: none;
+  }
+  .aviso:global(.error) {
+    color: var(--tinta);
+    font-weight: 600;
+  }
+  .registros {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .registros :global(li) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--esp-1) var(--esp-3);
+    padding-block: var(--esp-2);
+    border-top: 1px solid var(--veta);
+    font-family: var(--texto);
+    font-size: 16px;
+  }
+  .registros :global(li > :first-child) {
+    flex: 1 1 12rem;
+  }
+  .registros :global(.boton) {
+    min-height: 36px;
+    padding-inline: var(--esp-2);
+    font-size: 15px;
+  }
+</style>

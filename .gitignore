@@ -3,3 +3,8 @@ dist/
 .astro/
 .DS_Store
 *:Zone.Identifier
+
+# Variables de entorno
+.env
+.env.*
+!.env.example

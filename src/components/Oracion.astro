@@ -71,48 +71,49 @@ const Nombre = nombre || 'h2';
   {data.fuente && <p class="fuente etiqueta">{data.fuente}</p>}
 </article>
 
-<style>
+<style is:global>
+  /* Global: src/scripts/dibujar.ts arma este mismo marcado en el navegador para las oraciones de Supabase. */
   .oracion-bloque {
     text-align: center;
   }
-  .texto,
-  .letania {
+  .oracion-bloque .texto,
+  .oracion-bloque .letania {
     max-width: 34ch;
     margin-inline: auto;
   }
-  .texto p {
+  .oracion-bloque .texto p {
     margin: 0 0 var(--esp-4);
   }
-  .marca {
+  .oracion-bloque .marca {
     font-style: normal;
     font-weight: 600;
     color: var(--tinta-suave);
     margin-right: 0.2em;
   }
-  .letania-bloque {
+  .oracion-bloque .letania-bloque {
     margin-bottom: var(--esp-6);
   }
-  .letania ul {
+  .oracion-bloque .letania ul {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  .letania li {
+  .oracion-bloque .letania li {
     padding-block: var(--esp-1);
   }
-  .letania li > span {
+  .oracion-bloque .letania li > span {
     display: block;
   }
-  .comun {
+  .oracion-bloque .comun {
     margin: 0 0 var(--esp-3);
   }
-  .nota {
+  .oracion-bloque .nota {
     max-width: 34ch;
     margin: var(--esp-5) auto 0;
     color: var(--tinta-suave);
     font-style: italic;
   }
-  .fuente {
+  .oracion-bloque .fuente {
     margin-top: var(--esp-4);
     text-transform: none;
     letter-spacing: 0;

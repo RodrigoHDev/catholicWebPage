@@ -9,7 +9,7 @@ interface Props {
   class?: string;
 }
 
-const { pose, frase, tamano = 88, lado = 'der', class: clase } = Astro.props;
+const { pose, frase, tamano = 120, lado = 'der', class: clase } = Astro.props;
 const img = panchoImg(pose);
 const texto = frase === false ? null : (frase ?? PANCHO[pose].frase);
 ---

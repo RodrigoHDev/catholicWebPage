@@ -1,0 +1,61 @@
+---
+// Una categoría agregada desde /admin: /oraciones/categoria?id=<slug>. Se arma en el navegador.
+import Base from '../../layouts/Base.astro';
+import Pancho from '../../components/Pancho.astro';
+import Lista from '../../components/ListaOraciones.astro';
+---
+
+<Base titulo="Oraciones">
+  <main class="contenedor">
+    <nav class="migas"><a href="/oraciones">Oraciones</a></nav>
+
+    <header class="centrado encabezado">
+      <h1 class="titulo" data-titulo>Cargando…</h1>
+      <span class="filete" aria-hidden="true"></span>
+      <p class="subtitulo suave" data-descripcion hidden></p>
+    </header>
+
+    <div data-contenido hidden>
+      <Lista oraciones={[]} />
+    </div>
+
+    <Pancho pose="caja" lado="izq" class="final" />
+  </main>
+</Base>
+
+<script>
+  import { categoria, oracionesDelGrupo } from '../../lib/supabase';
+  import { sumarALista } from '../../scripts/dibujar';
+
+  const id = new URLSearchParams(location.search).get('id') ?? '';
+  const [c, oraciones] = await Promise.all([categoria(id), oracionesDelGrupo(id)]);
+  const titulo = document.querySelector<HTMLElement>('[data-titulo]')!;
+
+  if (!c) {
+    titulo.textContent = 'No encontramos esta sección';
+  } else {
+    titulo.textContent = c.titulo;
+    document.title = document.title.replace(/^Oraciones/, c.titulo);
+    const descripcion = document.querySelector<HTMLElement>('[data-descripcion]')!;
+    descripcion.textContent = c.descripcion;
+    descripcion.hidden = !c.descripcion;
+    sumarALista(oraciones);
+    document.querySelector<HTMLElement>('[data-contenido]')!.hidden = false;
+  }
+</script>
+
+<style>
+  .migas {
+    font-size: 15px;
+    margin-top: var(--esp-5);
+  }
+  .encabezado {
+    padding-block: var(--esp-5) var(--esp-6);
+  }
+  .encabezado .subtitulo {
+    margin: 0;
+  }
+  .final {
+    margin-top: var(--esp-7);
+  }
+</style>

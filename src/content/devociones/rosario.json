@@ -23,8 +23,8 @@
     }
   ],
   "peticiones": {
-    "pendiente": true,
-    "nota": "Aquí se ofrecen las intenciones antes de la primera decena. Se conectará con peticiones.json y con las que agregue mamá."
+    "pendiente": false,
+    "nota": "Antes de la primera decena, ofrecemos nuestras intenciones."
   },
   "decenas": 5,
   "decena": [

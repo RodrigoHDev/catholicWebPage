@@ -15,6 +15,7 @@ import { PANCHO, panchoImg } from '../../lib/pancho';
 import { POSES } from '../../lib/pancho-poses';
 import divinaMisericordia from '../../assets/divina-misericordia.jpg';
 import sagradoCorazon from '../../assets/sagrado-corazon.jpg';
+import peticionesFijas from '../../content/peticiones.json';
 
 export async function getStaticPaths() {
   const devociones = await getCollection('devociones');
@@ -38,6 +39,7 @@ const datos = {
   palabraDecena: conCuentas ? 'Decena' : 'Parte',
   conCuentas,
   pasos,
+  peticiones: peticionesFijas as string[],
   grupos: conMisterios ? GRUPOS.map(({ id, titulo, dias }) => ({ id, titulo, dias })) : [],
   pancho: Object.fromEntries(POSES.map((p) => [p, { src: panchoImg(p).src, alt: PANCHO[p].alt }])),
 };
@@ -281,6 +283,26 @@ const descripcion = PRESENTACION[devocion.id]?.descripcion;
     font-size: 13px;
     color: var(--tinta-suave);
     font-style: italic;
+  }
+  .escena :global(.peticiones) {
+    text-align: center;
+  }
+  .escena :global(.peticiones .subtitulo) {
+    max-width: 34ch;
+    margin: 0 auto var(--esp-5);
+  }
+  .escena :global(.lista-peticiones) {
+    list-style: none;
+    max-width: 34ch;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .escena :global(.lista-peticiones li) {
+    padding-block: var(--esp-2);
+    border-bottom: 1px solid var(--veta);
+  }
+  .escena :global(.lista-peticiones li:last-child) {
+    border-bottom: 0;
   }
   [data-pancho-paso] :global(.pancho),
   [data-pancho-fin] :global(.pancho) {

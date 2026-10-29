@@ -44,7 +44,7 @@ const logo = LOGOS[seccion.id];
 ---
 
 <Base titulo={seccion.data.titulo} descripcion={seccion.data.descripcion}>
-  <main class:list={[imagen ? 'contenedor-amplio' : 'contenedor']}>
+  <main class:list={[imagen ? 'contenedor-amplio' : 'contenedor']} data-seccion={seccion.id}>
     <nav class="migas"><a href="/oraciones">Oraciones</a></nav>
 
     {
@@ -82,6 +82,14 @@ const logo = LOGOS[seccion.id];
     />
   </main>
 </Base>
+
+<script>
+  import { oracionesDelGrupo } from '../../../lib/supabase';
+  import { sumarALista } from '../../../scripts/dibujar';
+
+  const seccion = document.querySelector<HTMLElement>('[data-seccion]')!.dataset.seccion!;
+  sumarALista(await oracionesDelGrupo(seccion));
+</script>
 
 <style>
   .migas {

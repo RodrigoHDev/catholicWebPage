@@ -8,8 +8,8 @@
     }
   ],
   "peticiones": {
-    "pendiente": true,
-    "nota": "Aquí se piensa la gracia que se pedirá; cada parte termina con «pido la gracia de…»."
+    "pendiente": false,
+    "nota": "Piensa en la gracia que vas a pedir; cada parte termina con «pido la gracia de…»."
   },
   "decenas": 3,
   "decena": [

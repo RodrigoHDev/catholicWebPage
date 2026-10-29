@@ -11,7 +11,7 @@ content/
     rosario.json        flujo completo del Santo Rosario
     coronilla.json      flujo de la Coronilla de la Divina Misericordia
     coronilla-sagrado-corazon.json   Coronilla al Sagrado Corazón (3 partes)
-  peticiones.json       vacío por ahora (pendiente)
+  peticiones.json       peticiones fijas: lista de textos (las de mamá van en Supabase, desde /admin)
   carta.md              (opcional) la carta para mamá, en la portada
 ../content.config.ts    esquema: Astro valida todo al compilar
 ```
@@ -28,6 +28,10 @@ content/
 - Saltos de línea simples = cambio de verso. Línea vacía = nuevo párrafo.
 - Los archivos que empiezan con `_` (como `_plantilla-tov.md`) se ignoran.
 
+## Oraciones y secciones desde la app
+
+En `/admin` (con sesión) se agregan oraciones a una sección de siempre o a una sección nueva. Se guardan en Supabase, no en estos archivos, y aparecen en la lista después de las fijas; su página es `/oraciones/ver?id=…`. Las secciones nuevas viven en `/oraciones/categoria?id=…`. Las devociones solo usan las oraciones de esta carpeta.
+
 ## Agregar una oración de TOV
 
 1. Copia `_plantilla-tov.md` con un nombre nuevo, sin `_` al inicio (p. ej. `tov-transfiguracion.md`).
@@ -39,7 +43,7 @@ content/
 - `introduccion` → `peticiones` → `decenas` × `decena` → `cierre`.
 - Cada paso referencia una oración por id. Si `oracion` es una lista, cada decena usa la suya (así funcionan las tres peticiones de la Coronilla al Sagrado Corazón). `repetir` indica cuántas veces se reza; `cuenta` dice si va en la cuenta grande o en las pequeñas del anillo.
 - `{"anuncio": "misterio"}` muestra el misterio de la decena actual con su imagen.
-- `peticiones.pendiente: true`: el lugar está reservado, pero la app aún no muestra nada ahí.
+- `peticiones`: pantalla después de la introducción con la `nota` y las peticiones (las de `peticiones.json` más las activas de Supabase, si hay sesión). Con `pendiente: true` no se muestra.
 
 ## Misterios
 

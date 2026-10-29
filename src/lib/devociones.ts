@@ -6,9 +6,11 @@ type PasoJson = { oracion: string | string[]; repetir?: number; cuenta?: 'grande
 
 // Un paso del reproductor: una pantalla.
 export interface Paso {
-  fase: 'introduccion' | 'decena' | 'cierre';
+  fase: 'introduccion' | 'peticiones' | 'decena' | 'cierre';
   oracion?: string;
   anuncio?: true;
+  // Pantalla de peticiones: la nota de la devoción; la lista llega en el navegador.
+  peticiones?: { nota: string };
   decena?: number; // 1, 2, 3…
   rep?: number; // 1…total cuando la oración se repite
   total?: number;
@@ -50,7 +52,8 @@ export function pasosDe(d: Devocion): Paso[] {
 
   for (const p of d.introduccion) pasos.push(...expandir(p, { fase: 'introduccion' }));
 
-  // d.peticiones.pendiente: el lugar está reservado; todavía no se muestra.
+  // pendiente: el lugar está reservado, pero todavía no se muestra.
+  if (!d.peticiones.pendiente) pasos.push({ fase: 'peticiones', peticiones: { nota: d.peticiones.nota } });
 
   for (let n = 1; n <= d.decenas; n++) {
     const decena: Paso[] = [];

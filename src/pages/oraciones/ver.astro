@@ -1,0 +1,87 @@
+---
+// Una oración agregada desde /admin: /oraciones/ver?id=<uuid>. Se arma en el navegador.
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Pancho from '../../components/Pancho.astro';
+
+const secciones = Object.fromEntries((await getCollection('secciones')).map((s) => [s.id, s.data.titulo]));
+---
+
+<Base titulo="Oración">
+  <main class="contenedor">
+    <nav class="migas"><a href="/oraciones" data-migas>Oraciones</a></nav>
+
+    <div class="hoja" data-hoja aria-live="polite">
+      <p class="cuerpo suave centrado" data-cargando>Cargando…</p>
+    </div>
+
+    <p class="centrado editar" data-editar hidden><a class="boton boton-secundario">Editar esta oración</a></p>
+
+    <div class="no-esta centrado" data-no-esta hidden>
+      <h1 class="titulo">No encontramos esta oración</h1>
+      <span class="filete" aria-hidden="true"></span>
+      <p class="cuerpo suave">Quizá se borró. Puedes buscarla entre todas las oraciones.</p>
+      <a class="boton boton-principal" href="/oraciones">Ver oraciones</a>
+    </div>
+
+    <Pancho pose="sentado" frase={false} lado="der" class="final" />
+  </main>
+</Base>
+
+<script type="application/json" id="secciones-fijas" set:html={JSON.stringify(secciones)} />
+<script>
+  import { supabase, oracion, categoria, urlCategoria } from '../../lib/supabase';
+  import { dibujarOracion } from '../../scripts/dibujar';
+
+  const secciones: Record<string, string> = JSON.parse(document.getElementById('secciones-fijas')!.textContent!);
+  const id = new URLSearchParams(location.search).get('id');
+  const o = id ? await oracion(id) : null;
+  const hoja = document.querySelector<HTMLElement>('[data-hoja]')!;
+
+  if (!o) {
+    hoja.hidden = true;
+    document.querySelector<HTMLElement>('[data-no-esta]')!.hidden = false;
+  } else {
+    document.title = document.title.replace(/^Oración/, o.nombre);
+    hoja.replaceChildren(dibujarOracion(o, 'h1'));
+
+    // Solo con sesión: lleva al formulario de /admin con la oración cargada.
+    const { data } = await supabase!.auth.getSession();
+    if (data.session) {
+      const editar = document.querySelector<HTMLElement>('[data-editar]')!;
+      editar.querySelector('a')!.href = `/admin?editar=${encodeURIComponent(o.id)}`;
+      editar.hidden = false;
+    }
+
+    const migas = document.querySelector<HTMLAnchorElement>('[data-migas]')!;
+    if (o.seccion && secciones[o.seccion]) {
+      migas.href = `/oraciones/${o.seccion}`;
+      migas.textContent = secciones[o.seccion];
+    } else if (o.categoria) {
+      const c = await categoria(o.categoria);
+      if (c) {
+        migas.href = urlCategoria(c);
+        migas.textContent = c.titulo;
+      }
+    }
+  }
+</script>
+
+<style>
+  .migas {
+    font-size: 15px;
+    margin-top: var(--esp-5);
+  }
+  .hoja {
+    padding-block: var(--esp-6) var(--esp-5);
+  }
+  .editar {
+    margin: 0 0 var(--esp-5);
+  }
+  .no-esta {
+    padding-block: var(--esp-6);
+  }
+  .final {
+    margin-top: var(--esp-7);
+  }
+</style>

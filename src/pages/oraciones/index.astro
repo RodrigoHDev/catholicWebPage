@@ -17,7 +17,7 @@ const cuantas = (id: string) => oraciones.filter((o) => o.data.seccion === id).l
       <span class="filete" aria-hidden="true"></span>
       <p class="subtitulo suave">Todas, completas, para rezarlas cuando quieras.</p>
     </header>
-    <ul class="lista">
+    <ul class="lista" data-secciones>
       {
         secciones.map((s) => (
           <li>
@@ -29,7 +29,7 @@ const cuantas = (id: string) => oraciones.filter((o) => o.data.seccion === id).l
               )}
               <span class="oracion-nombre">{s.data.titulo}</span>
               <span class="cuerpo suave">{s.data.descripcion}</span>
-              <span class="etiqueta">
+              <span class="etiqueta" data-conteo={s.id} data-fijas={cuantas(s.id)}>
                 {cuantas(s.id) === 1 ? '1 oración' : `${cuantas(s.id)} oraciones`}
               </span>
             </a>
@@ -40,6 +40,33 @@ const cuantas = (id: string) => oraciones.filter((o) => o.data.seccion === id).l
     <Pancho pose="caja" class="final" />
   </main>
 </Base>
+
+<script>
+  import { categorias, todasLasOraciones, grupoDe, urlCategoria } from '../../lib/supabase';
+  import { el } from '../../scripts/dibujar';
+
+  const [nuevas, oraciones] = await Promise.all([categorias(), todasLasOraciones()]);
+  const cuantas = (id: string) => oraciones.filter((o) => grupoDe(o) === id).length;
+  const etiqueta = (n: number) => (n === 1 ? '1 oración' : `${n} oraciones`);
+
+  // Las oraciones de la base que van en secciones fijas también cuentan.
+  for (const conteo of document.querySelectorAll<HTMLElement>('[data-conteo]')) {
+    const extra = cuantas(conteo.dataset.conteo!);
+    if (extra) conteo.textContent = etiqueta(Number(conteo.dataset.fijas) + extra);
+  }
+
+  const lista = document.querySelector('[data-secciones]')!;
+  for (const c of nuevas) {
+    const a = el('a', 'tarjeta enlace-tarjeta');
+    a.href = urlCategoria(c);
+    a.append(el('span', 'oracion-nombre', c.titulo));
+    if (c.descripcion) a.append(el('span', 'cuerpo suave', c.descripcion));
+    a.append(el('span', 'etiqueta', etiqueta(cuantas(c.id))));
+    const li = el('li');
+    li.append(a);
+    lista.append(li);
+  }
+</script>
 
 <style>
   .encabezado {
@@ -55,7 +82,8 @@ const cuantas = (id: string) => oraciones.filter((o) => o.data.seccion === id).l
     display: grid;
     gap: var(--esp-3);
   }
-  .enlace-tarjeta {
+  /* :global para que también tomen estilo las tarjetas de categorías nuevas, que se agregan en el navegador. */
+  .lista :global(.enlace-tarjeta) {
     display: grid;
     justify-items: center;
     text-align: center;
@@ -76,11 +104,11 @@ const cuantas = (id: string) => oraciones.filter((o) => o.data.seccion === id).l
     color: var(--fondo);
     font-size: 15px;
   }
-  .enlace-tarjeta .oracion-nombre {
+  .lista :global(.enlace-tarjeta .oracion-nombre) {
     font-size: 21px;
     line-height: 26px;
   }
-  .enlace-tarjeta .cuerpo {
+  .lista :global(.enlace-tarjeta .cuerpo) {
     font-size: 15px;
     line-height: 22px;
   }
